@@ -3,55 +3,54 @@ import { DeleteOrderUseCase } from './delete-order'
 import { Order } from '@/domain/enterprise/entitys/order'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { makeOrder } from 'test/factories/make-order'
+import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryOrdersRepository: InMemoryOrdersRepository
 let sout: DeleteOrderUseCase
 
 describe('Delete Order Use case', () => {
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryRecipientsRepository,
+    )
     sout = new DeleteOrderUseCase(inMemoryOrdersRepository)
   })
 
   it('should be able to delete a order', async () => {
-    const order = Order.create({})
+    const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
     const result = await sout.execute({
       orderId: order.id.toString,
-      recipientId: order.recipientId.toString,
     })
 
     expect(result.isRight())
     expect(inMemoryOrdersRepository.orders).toHaveLength(0)
   })
 
-  it('should not be able to delete a order from other recipient', async () => {
-    const order = Order.create({ recipientId: new UniqueEntityId() })
+  it('should be able to delete a recipient on database', async () => {
+    const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
     const result = await sout.execute({
       orderId: order.id.toString,
-      recipientId: 'fake-other-recipient-id',
     })
 
-    expect(result.isLeft())
-    expect(result.value).toBeInstanceOf(NotAllowedError)
-    expect(inMemoryOrdersRepository.orders).toHaveLength(1)
+    expect(result.isRight())
+    expect(inMemoryRecipientsRepository.recipients).toHaveLength(0)
   })
 
   it('should not be able to delete a pickup order', async () => {
-    const order = Order.create({
-      recipientId: new UniqueEntityId(),
-      courierId: new UniqueEntityId(),
-    })
+    const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
     order.state = 'PickedUp'
 
     const result = await sout.execute({
       orderId: order.id.toString,
-      recipientId: order.recipientId.toString,
     })
 
     expect(result.isLeft())

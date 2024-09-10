@@ -37,9 +37,6 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   set state(state: OrderState) {
-    if (!this.props.courierId) {
-      throw new Error('Courier Id not provided.')
-    }
     if (state === 'Delivered' && this.props.state !== 'PickedUp') {
       throw new Error('Cannot deliver an order that not has been pickedup.')
     }

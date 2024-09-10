@@ -11,13 +11,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     this.orders.push(order)
-
-    this.inMemoryRecipientsRepository.recipients.push(order.recipient)
+    this.inMemoryRecipientsRepository.create(order.recipient)
   }
 
   async delete(order: Order): Promise<void> {
     const index = this.orders.findIndex((item) => item.id === order.id)
     this.orders.splice(index)
+
+    this.inMemoryRecipientsRepository.delete(order.recipient)
   }
 
   async findById(orderId: string): Promise<Order | null> {

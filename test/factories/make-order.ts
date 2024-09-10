@@ -4,7 +4,10 @@ import { Recipient } from '@/domain/enterprise/entitys/recipient'
 import { Address } from '@/domain/enterprise/value-objects/address'
 import { faker } from '@faker-js/faker'
 
-export const makeOrder = (props: Partial<OrderProps>, id?: UniqueEntityId) => {
+export const makeOrder = (
+  props: Partial<OrderProps> = {},
+  id?: UniqueEntityId,
+) => {
   const recipient = Recipient.create({
     name: faker.person.firstName(),
     address: new Address({

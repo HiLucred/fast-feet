@@ -4,7 +4,6 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 interface DeleteOrderUseCaseRequest {
-  recipientId: string
   orderId: string
 }
 
@@ -18,7 +17,6 @@ export class DeleteOrderUseCase {
 
   async execute({
     orderId,
-    recipientId,
   }: DeleteOrderUseCaseRequest): Promise<DeleteOrderUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId)
 
@@ -26,11 +24,7 @@ export class DeleteOrderUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (order.recipientId.toString !== recipientId) {
-      return left(new NotAllowedError())
-    }
-
-    if (order.state !== 'Pending') {
+    if (order.state === 'PickedUp') {
       return left(new NotAllowedError())
     }
 

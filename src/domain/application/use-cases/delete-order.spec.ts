@@ -14,7 +14,7 @@ describe('Delete Order Use case', () => {
   })
 
   it('should be able to delete a order', async () => {
-    const order = Order.create({ recipientId: new UniqueEntityId() })
+    const order = Order.create({})
     inMemoryOrdersRepository.create(order)
 
     const result = await sout.execute({

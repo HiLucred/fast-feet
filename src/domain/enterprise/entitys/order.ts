@@ -4,7 +4,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { Recipient } from './recipient'
 
-interface OrderProps {
+export interface OrderProps {
   recipient: Recipient
   courierId?: UniqueEntityId
   state: OrderState // Pendente, Retirado e Entregue

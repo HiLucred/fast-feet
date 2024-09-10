@@ -9,9 +9,10 @@ interface CreateOrderUseCaseRequest {
   address: {
     zipCode: string
     street: string
-    number: number
+    number: string
     state: string
     city: string
+    neighborhood: string
   }
 }
 

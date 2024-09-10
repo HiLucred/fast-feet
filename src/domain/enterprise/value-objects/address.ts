@@ -2,8 +2,9 @@ import { ValueObject } from 'src/core/entities/value-object'
 
 interface AddressProps {
   zipCode: string
+  neighborhood: string
   street: string
-  number: number
+  number: string
   city: string
   state: string
 }
@@ -15,6 +16,14 @@ export class Address extends ValueObject<AddressProps> {
 
   get zipCode() {
     return this.props.zipCode
+  }
+
+  get neighborhood() {
+    return this.props.neighborhood
+  }
+
+  set neighborhood(neighborhood: string) {
+    this.props.neighborhood = neighborhood
   }
 
   get street() {

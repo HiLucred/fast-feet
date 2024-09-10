@@ -1,11 +1,18 @@
 import { OrdersRepository } from 'src/domain/application/repositories/orders-repository'
 import { Order } from 'src/domain/enterprise/entitys/order'
+import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
 
 export class InMemoryOrdersRepository implements OrdersRepository {
   public orders: Order[] = []
 
+  constructor(
+    private readonly inMemoryRecipientsRepository: InMemoryRecipientsRepository,
+  ) {}
+
   async create(order: Order): Promise<void> {
     this.orders.push(order)
+
+    this.inMemoryRecipientsRepository.recipients.push(order.recipient)
   }
 
   async delete(order: Order): Promise<void> {

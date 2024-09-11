@@ -1,14 +1,12 @@
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { DeleteOrderUseCase } from './delete-order'
-import { Order } from '@/domain/enterprise/entitys/order'
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { makeOrder } from 'test/factories/make-order'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sout: DeleteOrderUseCase
+let sut: DeleteOrderUseCase
 
 describe('Delete Order Use case', () => {
   beforeEach(() => {
@@ -16,14 +14,14 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository(
       inMemoryRecipientsRepository,
     )
-    sout = new DeleteOrderUseCase(inMemoryOrdersRepository)
+    sut = new DeleteOrderUseCase(inMemoryOrdersRepository)
   })
 
   it('should be able to delete a order', async () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
-    const result = await sout.execute({
+    const result = await sut.execute({
       orderId: order.id.toString,
     })
 
@@ -35,7 +33,7 @@ describe('Delete Order Use case', () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
-    const result = await sout.execute({
+    const result = await sut.execute({
       orderId: order.id.toString,
     })
 
@@ -47,9 +45,10 @@ describe('Delete Order Use case', () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
+    order.state = 'Pending'
     order.state = 'PickedUp'
 
-    const result = await sout.execute({
+    const result = await sut.execute({
       orderId: order.id.toString,
     })
 

@@ -4,7 +4,7 @@ import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-rep
 
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sout: CreateOrderUseCase
+let sut: CreateOrderUseCase
 
 describe('Create Order Use Case', () => {
   beforeEach(() => {
@@ -12,11 +12,11 @@ describe('Create Order Use Case', () => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository(
       inMemoryRecipientsRepository,
     )
-    sout = new CreateOrderUseCase(inMemoryOrdersRepository)
+    sut = new CreateOrderUseCase(inMemoryOrdersRepository)
   })
 
   it('should be able to create a order', async () => {
-    const result = await sout.execute({
+    const result = await sut.execute({
       recipientName: 'fake-recipient-name',
       address: {
         zipCode: '81130130',
@@ -37,7 +37,7 @@ describe('Create Order Use Case', () => {
   })
 
   it('should be able to create a recipient on database', async () => {
-    const result = await sout.execute({
+    const result = await sut.execute({
       recipientName: 'fake-recipient-name',
       address: {
         zipCode: '81130130',

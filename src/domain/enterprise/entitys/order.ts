@@ -7,7 +7,7 @@ import { Recipient } from './recipient'
 export interface OrderProps {
   recipient: Recipient
   courierId?: UniqueEntityId
-  state: OrderState // Pendente, Retirado e Entregue
+  state?: OrderState // Pendente, Retirado e Entregue
   pickupDate?: Date // Data de retirada
   deliveryDate?: Date // Data de entrega
   createdAt: Date
@@ -20,7 +20,7 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   set recipient(recipient: Recipient) {
-    this.recipient = recipient
+    this.props.recipient = recipient
   }
 
   get courierId() {
@@ -36,9 +36,21 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.state
   }
 
-  set state(state: OrderState) {
+  set state(state: OrderState | undefined) {
+    if (state === 'Pending' && this.props.state !== undefined) {
+      throw new Error(
+        'Cannot set an order to Pending when it has already been defined.',
+      )
+    }
+    if (state === 'PickedUp' && this.props.state !== 'Pending') {
+      throw new Error(
+        'Cannot set an order to PickedUp when it is not in Pending state.',
+      )
+    }
     if (state === 'Delivered' && this.props.state !== 'PickedUp') {
-      throw new Error('Cannot deliver an order that not has been pickedup.')
+      throw new Error(
+        'Cannot set an order to Delivered when it is not in PickedUp state.',
+      )
     }
 
     this.props.state = state
@@ -86,12 +98,11 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   static create(
-    props: Optional<OrderProps, 'state' | 'courierId' | 'createdAt'>,
+    props: Optional<OrderProps, 'courierId' | 'createdAt'>,
     id?: UniqueEntityId,
   ) {
     const order = new Order(
       {
-        state: props.state ?? 'Pending',
         createdAt: props.createdAt ?? new Date(),
         ...props,
       },

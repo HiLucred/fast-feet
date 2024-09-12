@@ -6,7 +6,7 @@ interface DeleteCourierUseCaseRequest {
   courierId: string
 }
 
-type DeleteCourierUseCaseResponse = Either<ResourceNotFoundError, object>
+type DeleteCourierUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class DeleteCourierUseCase {
   constructor(private readonly couriersRepository: CouriersRepository) {}
@@ -22,6 +22,6 @@ export class DeleteCourierUseCase {
 
     await this.couriersRepository.delete(courier)
 
-    return right({})
+    return right(null)
   }
 }

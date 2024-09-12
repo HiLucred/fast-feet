@@ -1,7 +1,7 @@
 import { Entity } from 'src/core/entities/entity'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
-interface CourierProps {
+export interface CourierProps {
   name: string
   cpf: string
   password: string

@@ -21,6 +21,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.inMemoryRecipientsRepository.delete(order.recipient)
   }
 
+  async save(order: Order): Promise<void> {
+    const orderIndex = this.orders.findIndex(
+      (item) => item.id.toString === order.id.toString,
+    )
+
+    this.orders[orderIndex] = order
+  }
+
   async findById(orderId: string): Promise<Order | null> {
     const order = this.orders.find((item) => item.id.toString === orderId)
     if (!order) return null

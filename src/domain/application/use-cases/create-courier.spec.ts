@@ -25,6 +25,11 @@ describe('Create Courier Use Case', () => {
 
     expect(courier.isRight()).toBeTruthy()
     expect(inMemoryCouriersRepository.couriers).toHaveLength(1)
+    if (courier.isRight()) {
+      expect(inMemoryCouriersRepository.couriers[0]).toEqual(
+        courier.value.courier,
+      )
+    }
   })
 
   it('should not be able to create a courier with same cpf', async () => {

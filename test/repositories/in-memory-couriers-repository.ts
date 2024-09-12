@@ -1,4 +1,4 @@
-import { CouriersRepository } from '@/domain/application/repositories/courier-repository'
+import { CouriersRepository } from '@/domain/application/repositories/couriers-repository'
 import { Courier } from '@/domain/enterprise/entitys/courier'
 
 export class InMemoryCouriersRepository implements CouriersRepository {

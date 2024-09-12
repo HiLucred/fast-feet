@@ -16,7 +16,7 @@ describe('Mark Order Pending Use case', () => {
     sut = new MarkOrderPendingUseCase(inMemoryOrdersRepository)
   })
 
-  it('should be able to set order to pending"', async () => {
+  it('should be able to mark a order as pending', async () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 

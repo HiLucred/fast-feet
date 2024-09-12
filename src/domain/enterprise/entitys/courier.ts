@@ -1,12 +1,12 @@
-import { Entity } from 'src/core/entity'
-import { LocationCoordinate } from '../value-objects/location-coordinate'
-import { UniqueEntityId } from 'src/core/unique-entity-id'
+import { Entity } from 'src/core/entities/entity'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 interface CourierProps {
   name: string
-  email: string
+  cpf: string
   password: string
-  location: LocationCoordinate
+  neighborhood: string
+  city: string
 }
 
 export class Courier extends Entity<CourierProps> {
@@ -15,31 +15,39 @@ export class Courier extends Entity<CourierProps> {
   }
 
   set name(name: string) {
-    this.name = name
+    this.props.name = name
   }
 
-  get email() {
-    return this.props.name
+  get cpf() {
+    return this.props.cpf
   }
 
-  set email(email: string) {
-    this.email = email
+  set email(cpf: string) {
+    this.props.cpf = cpf
   }
 
   get password() {
-    return this.props.name
+    return this.props.password
   }
 
   set password(password: string) {
-    this.password = password
+    this.props.password = password
   }
 
-  get location() {
-    return this.props.location
+  get neighborhood() {
+    return this.props.neighborhood
   }
 
-  set location(location: LocationCoordinate) {
-    this.props.location = location
+  set neighborhood(neighborhood: string) {
+    this.props.neighborhood = neighborhood
+  }
+
+  get city() {
+    return this.props.city
+  }
+
+  set city(city: string) {
+    this.props.city = city
   }
 
   static create(props: CourierProps, id?: UniqueEntityId) {

@@ -2,9 +2,11 @@ import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Order } from '@/domain/enterprise/entitys/order'
+import { CouriersRepository } from '../repositories/couriers-repository'
 
 interface MarkOrderPendingUseCaseRequest {
   orderId: string
+  courierId: string
 }
 
 type MarkOrderPendingUseCaseResponse = Either<
@@ -13,10 +15,14 @@ type MarkOrderPendingUseCaseResponse = Either<
 >
 
 export class MarkOrderPendingUseCase {
-  constructor(private readonly ordersRepository: OrdersRepository) {}
+  constructor(
+    private readonly ordersRepository: OrdersRepository,
+    private readonly couriersRepository: CouriersRepository,
+  ) {}
 
   async execute({
     orderId,
+    courierId,
   }: MarkOrderPendingUseCaseRequest): Promise<MarkOrderPendingUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId)
 
@@ -24,7 +30,16 @@ export class MarkOrderPendingUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    const courier = await this.couriersRepository.findById(courierId)
+
+    if (!courier) {
+      return left(new ResourceNotFoundError())
+    }
+
     order.state = 'Pending'
+    order.courierId = courier.id
+
+    await this.ordersRepository.save(order)
 
     return right({ order })
   }

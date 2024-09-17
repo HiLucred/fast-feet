@@ -10,25 +10,22 @@ let inMemoryOrdersRepository: InMemoryOrdersRepository
 let inMemoryCouriersRepository: InMemoryCouriersRepository
 let sut: MarkOrderPickupUseCase
 
-describe('', () => {
+describe('Mark Order Pickup Use Case', () => {
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(
       inMemoryRecipientsRepository,
     )
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
-    sut = new MarkOrderPickupUseCase(
-      inMemoryOrdersRepository,
-      inMemoryCouriersRepository,
-    )
+    sut = new MarkOrderPickupUseCase(inMemoryOrdersRepository)
   })
 
   it('should be able to mark a order as pickup', async () => {
-    const order = makeOrder({ state: 'Pending' })
-    await inMemoryOrdersRepository.create(order)
-
     const courier = makeCourier()
     await inMemoryCouriersRepository.create(courier)
+
+    const order = makeOrder({ state: 'Pending', courierId: courier.id })
+    await inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
       orderId: order.id.toString,
@@ -37,17 +34,16 @@ describe('', () => {
 
     expect(result.isRight()).toBeTruthy()
     if (result.isRight()) {
-      expect(inMemoryOrdersRepository.orders[0].courierId).toEqual(courier.id)
       expect(inMemoryOrdersRepository.orders[0].state).toEqual('PickedUp')
     }
   })
 
   it('should be able to save pickup date', async () => {
-    const order = makeOrder({ state: 'Pending' })
-    await inMemoryOrdersRepository.create(order)
-
     const courier = makeCourier()
     await inMemoryCouriersRepository.create(courier)
+
+    const order = makeOrder({ state: 'Pending', courierId: courier.id })
+    await inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
       orderId: order.id.toString,

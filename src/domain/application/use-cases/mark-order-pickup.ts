@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { CouriersRepository } from '../repositories/couriers-repository'
 import { Order } from '@/domain/enterprise/entitys/order'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 interface MarkOrderPickupUseCaseRequest {
   orderId: string
@@ -10,15 +10,12 @@ interface MarkOrderPickupUseCaseRequest {
 }
 
 type MarkOrderPickupUseCaseResponse = Either<
-  ResourceNotFoundError,
+  ResourceNotFoundError | NotAllowedError,
   { order: Order }
 >
 
 export class MarkOrderPickupUseCase {
-  constructor(
-    private readonly ordersRepository: OrdersRepository,
-    private readonly couriersRepository: CouriersRepository,
-  ) {}
+  constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,
@@ -30,13 +27,14 @@ export class MarkOrderPickupUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const courier = await this.couriersRepository.findById(courierId)
-
-    if (!courier) {
+    if (!order.courierId) {
       return left(new ResourceNotFoundError())
     }
 
-    order.courierId = courier.id
+    if (order.courierId.toString !== courierId) {
+      return left(new NotAllowedError())
+    }
+
     order.state = 'PickedUp'
 
     await this.ordersRepository.save(order)

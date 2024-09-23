@@ -39,7 +39,7 @@ describe('Mark Order Pending Use case', () => {
     expect(inMemoryOrdersRepository.orders[0].state).toEqual('Pending')
   })
 
-  it('should be able to set a recipient id in oder', async () => {
+  it('should be able to set a recipient id in an order', async () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 

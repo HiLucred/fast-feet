@@ -16,6 +16,14 @@ export class InMemoryCouriersRepository implements CouriersRepository {
     this.couriers.splice(courierIndex)
   }
 
+  async save(courier: Courier): Promise<void> {
+    const courierIndex = this.couriers.findIndex(
+      (index) => index.id === courier.id,
+    )
+
+    this.couriers[courierIndex] = courier
+  }
+
   async findById(courierId: string): Promise<Courier | null> {
     const courier = this.couriers.find(
       (courier) => courier.id.toString === courierId,

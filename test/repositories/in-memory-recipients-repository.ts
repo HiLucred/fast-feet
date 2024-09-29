@@ -16,6 +16,14 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     this.recipients.splice(recipientIndex)
   }
 
+  async save(recipient: Recipient): Promise<void> {
+    const recipientIndex = this.recipients.findIndex(
+      (index) => index.id === recipient.id,
+    )
+
+    this.recipients[recipientIndex] = recipient
+  }
+
   async findById(recipientId: string): Promise<Recipient | null> {
     const recipient = this.recipients.find(
       (recipient) => recipient.id.toString === recipientId,

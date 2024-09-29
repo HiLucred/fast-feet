@@ -5,8 +5,6 @@ export interface CourierProps {
   name: string
   cpf: string
   password: string
-  neighborhood: string
-  city: string
 }
 
 export class Courier extends Entity<CourierProps> {
@@ -22,8 +20,15 @@ export class Courier extends Entity<CourierProps> {
     return this.props.cpf
   }
 
-  set email(cpf: string) {
-    this.props.cpf = cpf
+  set cpf(cpf: string) {
+    const cleanedCpf = cpf.replace(/[^\d]/g, '')
+
+    if (cleanedCpf.length !== 11) {
+      throw new Error('CPF deve ter 11 caracteres numéricos')
+    }
+
+    cleanedCpf.split('').every((digit) => digit === cpf[0])
+    this.props.cpf = cleanedCpf
   }
 
   get password() {
@@ -32,22 +37,6 @@ export class Courier extends Entity<CourierProps> {
 
   set password(password: string) {
     this.props.password = password
-  }
-
-  get neighborhood() {
-    return this.props.neighborhood
-  }
-
-  set neighborhood(neighborhood: string) {
-    this.props.neighborhood = neighborhood
-  }
-
-  get city() {
-    return this.props.city
-  }
-
-  set city(city: string) {
-    this.props.city = city
   }
 
   static create(props: CourierProps, id?: UniqueEntityId) {

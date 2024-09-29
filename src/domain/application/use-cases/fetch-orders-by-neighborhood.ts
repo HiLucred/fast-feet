@@ -28,11 +28,12 @@ export class FetchOrdersByNeighborhoodUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const orders = ordersByCourier.filter(
-      (order) =>
+    const orders = ordersByCourier.filter((order) => {
+      return (
         order.recipient.address.neighborhood === neighborhood &&
-        order.state !== 'Delivered',
-    )
+        order.state !== 'Delivered'
+      )
+    })
 
     return right({ orders })
   }

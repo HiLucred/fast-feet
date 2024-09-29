@@ -49,5 +49,11 @@ describe('Edit Order Recipient Use Case', () => {
     expect(
       inMemoryOrdersRepository.orders[0].recipient.address.neighborhood,
     ).toEqual('Any Neighborhood')
+
+    if (result.isRight()) {
+      expect(inMemoryRecipientsRepository.recipients[0]).toEqual(
+        result.value.order.recipient,
+      )
+    }
   })
 })

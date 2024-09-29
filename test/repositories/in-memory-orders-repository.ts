@@ -26,6 +26,8 @@ export class InMemoryOrdersRepository implements OrdersRepository {
       (item) => item.id.toString === order.id.toString,
     )
     this.orders[orderIndex] = order
+
+    this.inMemoryRecipientsRepository.save(order.recipient)
   }
 
   async findById(orderId: string): Promise<Order | null> {

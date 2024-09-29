@@ -18,6 +18,10 @@ export class Address extends ValueObject<AddressProps> {
     return this.props.zipCode
   }
 
+  set zipCode(zipCode: string) {
+    this.props.zipCode = zipCode
+  }
+
   get neighborhood() {
     return this.props.neighborhood
   }
@@ -30,16 +34,32 @@ export class Address extends ValueObject<AddressProps> {
     return this.props.street
   }
 
+  set street(street: string) {
+    this.props.street = street
+  }
+
   get number() {
     return this.props.number
+  }
+
+  set number(number: string) {
+    this.props.number = number
   }
 
   get city() {
     return this.props.city
   }
 
+  set city(city: string) {
+    this.props.city = city
+  }
+
   get state() {
     return this.props.state
+  }
+
+  set state(state: string) {
+    this.props.state = state
   }
 
   private getFullAddress() {

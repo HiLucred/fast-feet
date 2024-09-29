@@ -1,7 +1,5 @@
-import { Either, left, right } from '@/core/either'
+import { Either, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Order } from '@/domain/enterprise/entitys/order'
 
 interface FetchOrdersByNeighborhoodUseCaseRequest {
@@ -10,7 +8,7 @@ interface FetchOrdersByNeighborhoodUseCaseRequest {
 }
 
 type FetchOrdersByNeighborhoodUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  unknown,
   { orders: Order[] }
 >
 
@@ -22,11 +20,7 @@ export class FetchOrdersByNeighborhoodUseCase {
     courierId,
   }: FetchOrdersByNeighborhoodUseCaseRequest): Promise<FetchOrdersByNeighborhoodUseCaseResponse> {
     const ordersByCourier =
-      await this.ordersRepository.fetchByCourierId(courierId)
-
-    if (!ordersByCourier) {
-      return left(new ResourceNotFoundError())
-    }
+      await this.ordersRepository.findManyByCourierId(courierId)
 
     const orders = ordersByCourier.filter((order) => {
       return (

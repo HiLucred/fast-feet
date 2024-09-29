@@ -10,9 +10,7 @@ export const makeCourier = (
     {
       name: faker.person.firstName(),
       password: 'mypassword123',
-      city: faker.location.city(),
       cpf: faker.location.zipCode(),
-      neighborhood: 'myneighborhood',
       ...props,
     },
     id,

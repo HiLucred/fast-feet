@@ -21,7 +21,7 @@ describe('Edit Courier Use Case', () => {
       courierId: courier.id.toString,
       name: 'Mark Daniel',
       cpf: '90990909090',
-      password: '1233456789',
+      password: '1231234234',
     })
 
     expect(result.isRight())

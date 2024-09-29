@@ -38,22 +38,18 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order
   }
 
-  async fetchByNeighborhood(neighborhood: string): Promise<Order[] | null> {
+  async findManyByNeighborhood(neighborhood: string): Promise<Order[]> {
     const orders = this.orders.filter(
       (item) => item.recipient.address.neighborhood === neighborhood,
     )
 
-    if (!orders) return null
-
     return orders
   }
 
-  async fetchByCourierId(courierId: string): Promise<Order[] | null> {
+  async findManyByCourierId(courierId: string): Promise<Order[]> {
     const orders = this.orders.filter(
       (item) => item.courierId?.toString === courierId,
     )
-
-    if (!orders) return null
 
     return orders
   }

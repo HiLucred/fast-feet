@@ -19,8 +19,6 @@ describe('Create Courier Use Case', () => {
       name: 'John Doe',
       cpf: '81130130',
       password: '1234567',
-      city: 'Curitiba',
-      neighborhood: 'Capão Raso',
     })
 
     expect(courier.isRight()).toBeTruthy()
@@ -39,16 +37,12 @@ describe('Create Courier Use Case', () => {
       name: 'John Doe',
       cpf: myCpf,
       password: '1234567',
-      city: 'Curitiba',
-      neighborhood: 'Capão Raso',
     })
 
     const courier = await sut.execute({
       name: 'John Doe',
       cpf: myCpf,
       password: '1234567',
-      city: 'Curitiba',
-      neighborhood: 'Capão Raso',
     })
 
     expect(courier.isLeft()).toBeTruthy()
@@ -57,15 +51,13 @@ describe('Create Courier Use Case', () => {
     }
   })
 
-  it('should not be able to create a courier with hashed password', async () => {
+  it('should be able to create a courier with hashed password', async () => {
     const myPassword = '1234567'
 
     const courier = await sut.execute({
       name: 'John Doe',
       cpf: '81130130',
       password: myPassword,
-      city: 'Curitiba',
-      neighborhood: 'Capão Raso',
     })
 
     if (courier.isRight()) {

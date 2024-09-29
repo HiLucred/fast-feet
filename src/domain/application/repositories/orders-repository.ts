@@ -5,6 +5,6 @@ export abstract class OrdersRepository {
   abstract delete(order: Order): Promise<void>
   abstract save(order: Order): Promise<void>
   abstract findById(orderId: string): Promise<Order | null>
-  abstract fetchByNeighborhood(neighborhood: string): Promise<Order[] | null>
-  abstract fetchByCourierId(courierId: string): Promise<Order[] | null>
+  abstract findManyByNeighborhood(neighborhood: string): Promise<Order[]>
+  abstract findManyByCourierId(courierId: string): Promise<Order[]>
 }

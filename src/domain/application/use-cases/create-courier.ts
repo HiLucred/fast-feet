@@ -8,8 +8,6 @@ interface CreateCourierUseCaseRequest {
   name: string
   cpf: string
   password: string
-  neighborhood: string
-  city: string
 }
 
 type CreateCourierUseCaseResponse = Either<
@@ -27,8 +25,6 @@ export class CreateCourierUseCase {
     name,
     cpf,
     password,
-    neighborhood,
-    city,
   }: CreateCourierUseCaseRequest): Promise<CreateCourierUseCaseResponse> {
     const hasCourierWithSameCpf = await this.courierRepository.findByCpf(cpf)
 
@@ -42,8 +38,6 @@ export class CreateCourierUseCase {
       cpf,
       name,
       password: hashedPassword,
-      neighborhood,
-      city,
     })
 
     await this.courierRepository.create(courier)

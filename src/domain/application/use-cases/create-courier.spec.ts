@@ -2,6 +2,7 @@ import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers
 import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { Courier } from '@/domain/enterprise/entitys/courier'
 
 let inMemoryCouriersRepository: InMemoryCouriersRepository
 let fakeHash: FakeHash
@@ -19,6 +20,7 @@ describe('Create Courier Use Case', () => {
       name: 'John Doe',
       cpf: '81130130',
       password: '1234567',
+      userRole: 'admin',
     })
 
     expect(courier.isRight()).toBeTruthy()
@@ -30,39 +32,55 @@ describe('Create Courier Use Case', () => {
     }
   })
 
-  it('should not be able to create a courier with same cpf', async () => {
-    const myCpf = '81130130'
-
-    await sut.execute({
-      name: 'John Doe',
-      cpf: myCpf,
-      password: '1234567',
-    })
-
+  it('should not be able to create a courier without role admin', async () => {
     const courier = await sut.execute({
       name: 'John Doe',
-      cpf: myCpf,
+      cpf: '81130130',
       password: '1234567',
+      userRole: 'courier',
     })
 
     expect(courier.isLeft()).toBeTruthy()
-    if (courier.isLeft()) {
-      expect(courier.value).toBeInstanceOf(NotAllowedError)
+    expect(inMemoryCouriersRepository.couriers).toHaveLength(0)
+  })
+
+  it('should not be able to create a courier with same cpf', async () => {
+    const MY_CPF = '81130130'
+
+    inMemoryCouriersRepository.create(
+      Courier.create({
+        name: 'John Doe',
+        cpf: MY_CPF,
+        password: '1234567',
+      }),
+    )
+
+    const result = await sut.execute({
+      name: 'John Doe',
+      cpf: MY_CPF,
+      password: '1234567',
+      userRole: 'admin',
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    if (result.isLeft()) {
+      expect(result.value).toBeInstanceOf(NotAllowedError)
     }
   })
 
   it('should be able to create a courier with hashed password', async () => {
-    const myPassword = '1234567'
+    const MY_PASSWORD = '1234567'
 
     const courier = await sut.execute({
       name: 'John Doe',
       cpf: '81130130',
-      password: myPassword,
+      password: MY_PASSWORD,
+      userRole: 'admin',
     })
 
     if (courier.isRight()) {
       const hashedPassword = await fakeHash.compare(
-        myPassword,
+        MY_PASSWORD,
         courier.value.courier.password,
       )
       expect(hashedPassword).toBe(true)

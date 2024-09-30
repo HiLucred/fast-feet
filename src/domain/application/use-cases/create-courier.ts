@@ -5,6 +5,7 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { HashGenerator } from '../cryptography/hash-generator'
 
 interface CreateCourierUseCaseRequest {
+  userRole: string
   name: string
   cpf: string
   password: string
@@ -22,10 +23,15 @@ export class CreateCourierUseCase {
   ) {}
 
   async execute({
+    userRole,
     name,
     cpf,
     password,
   }: CreateCourierUseCaseRequest): Promise<CreateCourierUseCaseResponse> {
+    if (userRole !== 'admin') {
+      return left(new NotAllowedError())
+    }
+
     const hasCourierWithSameCpf = await this.courierRepository.findByCpf(cpf)
 
     if (hasCourierWithSameCpf) {

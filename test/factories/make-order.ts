@@ -10,10 +10,11 @@ export const makeOrder = (
 ) => {
   const recipient = Recipient.create({
     name: faker.person.firstName(),
+    phoneNumber: faker.phone.number(),
     address: new Address({
       zipCode: faker.location.zipCode(),
       street: faker.location.street(),
-      neighborhood: 'Capão Raso',
+      neighborhood: 'Jardim das Flores',
       city: faker.location.city(),
       number: faker.location.buildingNumber(),
       state: faker.location.state(),

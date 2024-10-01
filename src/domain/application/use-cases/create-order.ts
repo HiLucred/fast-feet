@@ -5,20 +5,18 @@ import { Recipient } from '@/domain/enterprise/entitys/recipient'
 import { Address } from '@/domain/enterprise/value-objects/address'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
-type RecipientAddress = {
-  zipCode: string
-  street: string
-  number: string
-  state: string
-  city: string
-  neighborhood: string
-}
-
 interface CreateOrderUseCaseRequest {
   userRole: string
   recipientName: string
   recipientPhoneNumber: string
-  address: RecipientAddress
+  address: {
+    zipCode: string
+    street: string
+    number: string
+    state: string
+    city: string
+    neighborhood: string
+  }
 }
 
 type CreateOrderUseCaseResponse = Either<NotAllowedError, { order: Order }>

@@ -3,6 +3,7 @@ import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Courier } from '@/domain/enterprise/entitys/courier'
+import { faker } from '@faker-js/faker'
 
 let inMemoryCouriersRepository: InMemoryCouriersRepository
 let fakeHash: FakeHash
@@ -17,9 +18,9 @@ describe('Create Courier Use Case', () => {
 
   it('should be able to create a courier', async () => {
     const courier = await sut.execute({
-      name: 'John Doe',
-      cpf: '81130130',
-      password: '1234567',
+      name: faker.person.fullName(),
+      cpf: '888888888',
+      password: faker.internet.password(),
       userRole: 'admin',
     })
 
@@ -34,9 +35,9 @@ describe('Create Courier Use Case', () => {
 
   it('should not be able to create a courier without role admin', async () => {
     const courier = await sut.execute({
-      name: 'John Doe',
-      cpf: '81130130',
-      password: '1234567',
+      name: faker.person.fullName(),
+      cpf: '888888888',
+      password: faker.internet.password(),
       userRole: 'courier',
     })
 
@@ -45,20 +46,20 @@ describe('Create Courier Use Case', () => {
   })
 
   it('should not be able to create a courier with same cpf', async () => {
-    const MY_CPF = '81130130'
+    const MY_CPF = '888888888'
 
     inMemoryCouriersRepository.create(
       Courier.create({
-        name: 'John Doe',
         cpf: MY_CPF,
-        password: '1234567',
+        name: faker.person.fullName(),
+        password: faker.internet.password(),
       }),
     )
 
     const result = await sut.execute({
-      name: 'John Doe',
       cpf: MY_CPF,
-      password: '1234567',
+      name: faker.person.fullName(),
+      password: faker.internet.password(),
       userRole: 'admin',
     })
 
@@ -72,9 +73,9 @@ describe('Create Courier Use Case', () => {
     const MY_PASSWORD = '1234567'
 
     const courier = await sut.execute({
-      name: 'John Doe',
-      cpf: '81130130',
       password: MY_PASSWORD,
+      name: faker.person.fullName(),
+      cpf: '888888888',
       userRole: 'admin',
     })
 

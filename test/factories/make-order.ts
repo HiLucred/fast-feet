@@ -14,7 +14,7 @@ export const makeOrder = (
     address: new Address({
       zipCode: faker.location.zipCode(),
       street: faker.location.street(),
-      neighborhood: 'Jardim das Flores',
+      neighborhood: faker.location.secondaryAddress(),
       city: faker.location.city(),
       number: faker.location.buildingNumber(),
       state: faker.location.state(),

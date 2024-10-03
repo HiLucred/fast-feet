@@ -8,7 +8,7 @@ interface FetchOrdersByNeighborhoodUseCaseRequest {
 }
 
 type FetchOrdersByNeighborhoodUseCaseResponse = Either<
-  unknown,
+  null,
   { orders: Order[] }
 >
 

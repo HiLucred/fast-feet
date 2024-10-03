@@ -3,8 +3,10 @@ import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Order } from '@/domain/enterprise/entitys/order'
 import { CouriersRepository } from '../repositories/couriers-repository'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 interface MarkOrderPendingUseCaseRequest {
+  userRole: string
   orderId: string
   courierId: string
 }
@@ -21,9 +23,14 @@ export class MarkOrderPendingUseCase {
   ) {}
 
   async execute({
+    userRole,
     orderId,
     courierId,
   }: MarkOrderPendingUseCaseRequest): Promise<MarkOrderPendingUseCaseResponse> {
+    if (userRole !== 'admin') {
+      return left(new NotAllowedError())
+    }
+
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {

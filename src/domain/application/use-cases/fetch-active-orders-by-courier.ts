@@ -2,21 +2,21 @@ import { Either, right } from '@/core/either'
 import { Order } from '@/domain/enterprise/entitys/order'
 import { OrdersRepository } from '../repositories/orders-repository'
 
-interface FetchPendingOrdersByCourierUseCaseRequest {
+interface FetchActiveOrdersByCourierUseCaseRequest {
   courierId: string
 }
 
-type FetchPendingOrdersByCourierUseCaseResponse = Either<
+type FetchActiveOrdersByCourierUseCaseResponse = Either<
   null,
   { orders: Order[] }
 >
 
-export class FetchPendingOrdersByCourierUseCase {
+export class FetchActiveOrdersByCourierUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute({
     courierId,
-  }: FetchPendingOrdersByCourierUseCaseRequest): Promise<FetchPendingOrdersByCourierUseCaseResponse> {
+  }: FetchActiveOrdersByCourierUseCaseRequest): Promise<FetchActiveOrdersByCourierUseCaseResponse> {
     const orders = await this.ordersRepository.findManyByCourierId(courierId)
 
     const pendingOrders = orders.filter(

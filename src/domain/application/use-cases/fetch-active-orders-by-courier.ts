@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { Order } from '@/domain/enterprise/entitys/order'
+import { Order } from '@/domain/enterprise/entities/order'
 import { OrdersRepository } from '../repositories/orders-repository'
 
 interface FetchActiveOrdersByCourierUseCaseRequest {

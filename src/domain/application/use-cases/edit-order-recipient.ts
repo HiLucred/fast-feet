@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { Order } from '@/domain/enterprise/entitys/order'
-import { Address } from '@/domain/enterprise/value-objects/address'
+import { Order } from '@/domain/enterprise/entities/order'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { Address } from '@/domain/enterprise/entities/value-objects/address'
 
 interface EditOrderUseCaseRequest {
   userRole: string

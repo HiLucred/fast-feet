@@ -1,41 +1,37 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Order } from '@/domain/enterprise/entities/order'
 
-interface MarkOrderPickupUseCaseRequest {
+interface MarkOrderDeliveredUseCaseRequest {
   orderId: string
   courierId: string
 }
 
-type MarkOrderPickupUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+type MarkOrderDeliveredUseCaseResponse = Either<
+  NotAllowedError | ResourceNotFoundError,
   { order: Order }
 >
 
-export class MarkOrderPickupUseCase {
-  constructor(private readonly ordersRepository: OrdersRepository) {}
+export class MarkOrderDeliveredUseCase {
+  constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,
     courierId,
-  }: MarkOrderPickupUseCaseRequest): Promise<MarkOrderPickupUseCaseResponse> {
+  }: MarkOrderDeliveredUseCaseRequest): Promise<MarkOrderDeliveredUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
       return left(new ResourceNotFoundError())
     }
 
-    if (!order.courierId) {
-      return left(new ResourceNotFoundError())
-    }
-
-    if (order.courierId.toString !== courierId) {
+    if (order.courierId?.toString !== courierId) {
       return left(new NotAllowedError())
     }
 
-    order.state = 'PickedUp'
+    order.state = 'Delivered'
 
     await this.ordersRepository.save(order)
 

@@ -2,8 +2,8 @@ import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers
 import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { Courier } from '@/domain/enterprise/entitys/courier'
 import { faker } from '@faker-js/faker'
+import { Courier } from '@/domain/enterprise/entities/courier'
 
 let inMemoryCouriersRepository: InMemoryCouriersRepository
 let fakeHash: FakeHash

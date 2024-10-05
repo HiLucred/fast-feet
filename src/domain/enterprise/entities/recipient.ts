@@ -1,6 +1,6 @@
 import { Entity } from 'src/core/entities/entity'
-import { Address } from '../value-objects/address'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { Address } from './value-objects/address'
 
 interface RecipientProps {
   name: string

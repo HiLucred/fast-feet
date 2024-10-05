@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { Order } from '@/domain/enterprise/entitys/order'
 import { CouriersRepository } from '../repositories/couriers-repository'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { Order } from '@/domain/enterprise/entities/order'
 
 interface MarkOrderPendingUseCaseRequest {
   userRole: string

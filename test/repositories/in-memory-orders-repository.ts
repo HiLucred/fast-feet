@@ -1,6 +1,6 @@
 import { OrdersRepository } from 'src/domain/application/repositories/orders-repository'
-import { Order } from 'src/domain/enterprise/entitys/order'
 import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
+import { Order } from '@/domain/enterprise/entities/order'
 
 export class InMemoryOrdersRepository implements OrdersRepository {
   public orders: Order[] = []

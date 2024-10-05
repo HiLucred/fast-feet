@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/couriers-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import { Courier } from '@/domain/enterprise/entitys/courier'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { Courier } from '@/domain/enterprise/entities/courier'
 
 interface EditCourierUseCaseRequest {
   userRole: string

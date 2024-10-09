@@ -3,10 +3,10 @@ import { EditCourierUseCase } from './edit-courier'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { faker } from '@faker-js/faker'
 
-let inMemoryCouriersRepository: InMemoryCouriersRepository
-let sut: EditCourierUseCase
-
 describe('Edit Courier Use Case', () => {
+  let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let sut: EditCourierUseCase
+
   beforeEach(() => {
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     sut = new EditCourierUseCase(inMemoryCouriersRepository)

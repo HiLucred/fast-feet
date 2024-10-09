@@ -8,12 +8,12 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { faker } from '@faker-js/faker'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let inMemoryDeliveryPhotosRepository: InMemoryDeliveryPhotosRepository
-let sut: MarkOrderDeliveredUseCase
-
 describe('Mark Order Delivered Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let inMemoryDeliveryPhotosRepository: InMemoryDeliveryPhotosRepository
+  let sut: MarkOrderDeliveredUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

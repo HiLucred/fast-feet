@@ -4,11 +4,11 @@ import { FetchDeliveredOrdersByCourierUseCase } from './fetch-delivered-orders-b
 import { makeOrder } from 'test/factories/make-order'
 import { makeCourier } from 'test/factories/make-courier'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: FetchDeliveredOrdersByCourierUseCase
-
 describe('Fetch Delivered Orders By Courier', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: FetchDeliveredOrdersByCourierUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

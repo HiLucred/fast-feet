@@ -4,11 +4,11 @@ import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-rep
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: FetchOrdersByNeighborhoodUseCase
-
 describe('Fetch Order By Neighborhood Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: FetchOrdersByNeighborhoodUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

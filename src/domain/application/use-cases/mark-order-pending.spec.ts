@@ -5,12 +5,12 @@ import { MarkOrderPendingUseCase } from './mark-order-pending'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { makeCourier } from 'test/factories/make-courier'
 
-let inMemoryCouriersRepository: InMemoryCouriersRepository
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: MarkOrderPendingUseCase
-
 describe('Mark Order Pending Use case', () => {
+  let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: MarkOrderPendingUseCase
+
   beforeEach(() => {
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()

@@ -3,11 +3,11 @@ import { CreateOrderUseCase } from './create-order'
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { faker } from '@faker-js/faker'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: CreateOrderUseCase
-
 describe('Create Order Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: CreateOrderUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

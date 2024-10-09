@@ -1,6 +1,7 @@
 import { OrdersRepository } from 'src/domain/application/repositories/orders-repository'
 import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
 import { Order } from '@/domain/enterprise/entities/order'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryOrdersRepository implements OrdersRepository {
   public orders: Order[] = []
@@ -28,6 +29,8 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.orders[orderIndex] = order
 
     this.inMemoryRecipientsRepository.save(order.recipient)
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 
   async findById(orderId: string): Promise<Order | null> {

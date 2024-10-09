@@ -3,11 +3,11 @@ import { GetOrderByIdUseCase } from './get-order-by-id'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { makeOrder } from 'test/factories/make-order'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: GetOrderByIdUseCase
-
 describe('Get Order By Id Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: GetOrderByIdUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

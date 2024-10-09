@@ -6,14 +6,14 @@ import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipi
 import { makeOrder } from 'test/factories/make-order'
 import { InvalidDeliveryPhotoTypeError } from './errors/invalid-delivery-photo-type'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-
-let inMemoryDeliveryPhotosRepository: InMemoryDeliveryPhotosRepository
-let fakeUploader: FakeUploader
-let sut: UploadPhotoDeliveryUseCase
-
 describe('Upload Photo Delivery Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+
+  let inMemoryDeliveryPhotosRepository: InMemoryDeliveryPhotosRepository
+  let fakeUploader: FakeUploader
+  let sut: UploadPhotoDeliveryUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

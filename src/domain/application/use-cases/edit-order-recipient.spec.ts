@@ -3,11 +3,11 @@ import { EditOrderUseCase } from './edit-order-recipient'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { makeOrder } from 'test/factories/make-order'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: EditOrderUseCase
-
 describe('Edit Order Recipient Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: EditOrderUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

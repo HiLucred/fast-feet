@@ -4,11 +4,11 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { makeOrder } from 'test/factories/make-order'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let sut: DeleteOrderUseCase
-
 describe('Delete Order Use case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let sut: DeleteOrderUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

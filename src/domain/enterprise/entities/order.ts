@@ -3,6 +3,8 @@ import { OrderState } from '@/core/types/order-state'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { Recipient } from './recipient'
+import { OrderPickedUpEvent } from '../events/order-picked-up-event'
+import { OrderDeliveredEvent } from '../events/order-delivered-event'
 
 export interface OrderProps {
   recipient: Recipient
@@ -56,11 +58,16 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.state = state
 
     switch (state) {
+      case 'Pending':
+        this.addDomainEvent(new OrderPickedUpEvent(this))
+        break
       case 'PickedUp':
         this.pickupDate = new Date()
+        this.addDomainEvent(new OrderPickedUpEvent(this))
         break
       case 'Delivered':
         this.deliveryDate = new Date()
+        this.addDomainEvent(new OrderDeliveredEvent(this))
         break
     }
 

@@ -5,11 +5,11 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { faker } from '@faker-js/faker'
 import { Courier } from '@/domain/enterprise/entities/courier'
 
-let inMemoryCouriersRepository: InMemoryCouriersRepository
-let fakeHash: FakeHash
-let sut: CreateCourierUseCase
-
 describe('Create Courier Use Case', () => {
+  let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let fakeHash: FakeHash
+  let sut: CreateCourierUseCase
+
   beforeEach(() => {
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     fakeHash = new FakeHash()

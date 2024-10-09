@@ -5,12 +5,12 @@ import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipi
 import { makeOrder } from 'test/factories/make-order'
 import { makeCourier } from 'test/factories/make-courier'
 
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let inMemoryOrdersRepository: InMemoryOrdersRepository
-let inMemoryCouriersRepository: InMemoryCouriersRepository
-let sut: MarkOrderPickupUseCase
-
 describe('Mark Order Pickup Use Case', () => {
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+  let inMemoryOrdersRepository: InMemoryOrdersRepository
+  let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let sut: MarkOrderPickupUseCase
+
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryOrdersRepository = new InMemoryOrdersRepository(

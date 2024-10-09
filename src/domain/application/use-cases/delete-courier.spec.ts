@@ -2,10 +2,10 @@ import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers
 import { DeleteCourierUseCase } from './delete-courier'
 import { makeCourier } from 'test/factories/make-courier'
 
-let inMemoryCouriersRepository: InMemoryCouriersRepository
-let sut: DeleteCourierUseCase
-
 describe('Delete Courier Use Case', () => {
+  let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let sut: DeleteCourierUseCase
+
   beforeEach(() => {
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
     sut = new DeleteCourierUseCase(inMemoryCouriersRepository)

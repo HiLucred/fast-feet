@@ -35,7 +35,7 @@ export class MarkOrderPickupUseCase {
       return left(new NotAllowedError())
     }
 
-    order.state = 'PickedUp'
+    order.markAsPickedUp()
 
     await this.ordersRepository.save(order)
 

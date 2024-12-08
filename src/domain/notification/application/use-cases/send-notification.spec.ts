@@ -5,15 +5,15 @@ import { faker } from '@faker-js/faker'
 
 describe('Send Notification Use Case', () => {
   let inMemoryNotificationsRepository: InMemoryNotificationsRepository
-  let senderNotification: FakeSenderNotification
+  let fakeSenderNotification: FakeSenderNotification
   let sut: SendNotificationUseCase
 
   beforeEach(() => {
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
-    senderNotification = new FakeSenderNotification()
+    fakeSenderNotification = new FakeSenderNotification()
     sut = new SendNotificationUseCase(
       inMemoryNotificationsRepository,
-      senderNotification,
+      fakeSenderNotification,
     )
   })
 

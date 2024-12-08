@@ -57,10 +57,8 @@ describe('Delete Order Use case', () => {
   })
 
   it('should not be able to delete a pickup order', async () => {
-    const order = makeOrder({ state: 'Pending' }) // Create a order with "Pending" state
+    const order = makeOrder({ state: 'PickedUp' }) // Create a order with "Pending" state
     inMemoryOrdersRepository.create(order)
-
-    order.state = 'PickedUp' // Courier pickup order
 
     const result = await sut.execute({
       userRole: 'admin',

@@ -42,7 +42,7 @@ export class MarkOrderDeliveredUseCase {
       return left(new NotAllowedError())
     }
 
-    order.state = 'Delivered'
+    order.markAsDelivered()
 
     await this.ordersRepository.save(order)
 

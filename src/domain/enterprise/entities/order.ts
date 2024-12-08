@@ -5,6 +5,7 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { Recipient } from './recipient'
 import { OrderPickedUpEvent } from '../events/order-picked-up-event'
 import { OrderDeliveredEvent } from '../events/order-delivered-event'
+import { OrderPendingEvent } from '../events/order-pending-event'
 
 export interface OrderProps {
   recipient: Recipient
@@ -38,39 +39,38 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.state
   }
 
-  set state(state: OrderState | undefined) {
-    if (state === 'Pending' && this.props.state !== undefined) {
+  markAsPending() {
+    if (this.props.state !== undefined) {
       throw new Error(
         'Cannot set an order to Pending when it has already been defined.',
       )
     }
-    if (state === 'PickedUp' && this.props.state !== 'Pending') {
+    this.props.state = 'Pending'
+    this.addDomainEvent(new OrderPendingEvent(this))
+    this.touch()
+  }
+
+  markAsPickedUp() {
+    if (this.props.state !== 'Pending') {
       throw new Error(
         'Cannot set an order to PickedUp when it is not in Pending state.',
       )
     }
-    if (state === 'Delivered' && this.props.state !== 'PickedUp') {
+    this.props.state = 'PickedUp'
+    this.pickupDate = new Date()
+    this.addDomainEvent(new OrderPickedUpEvent(this))
+    this.touch()
+  }
+
+  markAsDelivered() {
+    if (this.props.state !== 'PickedUp') {
       throw new Error(
         'Cannot set an order to Delivered when it is not in PickedUp state.',
       )
     }
-
-    this.props.state = state
-
-    switch (state) {
-      case 'Pending':
-        this.addDomainEvent(new OrderPickedUpEvent(this))
-        break
-      case 'PickedUp':
-        this.pickupDate = new Date()
-        this.addDomainEvent(new OrderPickedUpEvent(this))
-        break
-      case 'Delivered':
-        this.deliveryDate = new Date()
-        this.addDomainEvent(new OrderDeliveredEvent(this))
-        break
-    }
-
+    this.props.state = 'Delivered'
+    this.deliveryDate = new Date()
+    this.addDomainEvent(new OrderDeliveredEvent(this))
     this.touch()
   }
 

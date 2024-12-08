@@ -43,7 +43,7 @@ export class MarkOrderPendingUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    order.state = 'Pending'
+    order.markAsPending()
     order.courierId = courier.id
 
     await this.ordersRepository.save(order)

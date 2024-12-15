@@ -20,7 +20,7 @@ export class OnOrderPending implements EventHandler {
   private async sendOrderPendingNotification({ order }: OrderPendingEvent) {
     await this.sendNotificationUseCase.execute({
       recipientNumber: order.recipient.phoneNumber,
-      content: `📦✅ O Pedido chegou em "R. ${order.recipient.address.street}, ${order.recipient.address.number}". Muito obrigado pela confiança, ${order.recipient.name}!! 😄❤️`,
+      content: `📦 Olá, ${order.recipient.name}! Seu pedido com entrega para ${order.recipient.address.toString()} está pendente. Estamos cuidando de tudo para você!`,
     })
   }
 }

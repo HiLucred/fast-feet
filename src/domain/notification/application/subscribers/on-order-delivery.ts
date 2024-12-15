@@ -20,7 +20,7 @@ export class OnOrderDelivery implements EventHandler {
   private async sendOrderDeliveredNotification({ order }: OrderDeliveredEvent) {
     await this.sendNotificationUseCase.execute({
       recipientNumber: order.recipient.phoneNumber,
-      content: `📦✅ O Pedido chegou em "R. ${order.recipient.address.street}, ${order.recipient.address.number}". Muito obrigado pela confiança, ${order.recipient.name}!! 😄❤️`,
+      content: `✅ Olá, ${order.recipient.name}! Seu pedido foi entregue com sucesso em ${order.recipient.address.toString()}. Obrigado por confiar em nossos serviços!"`,
     })
   }
 }

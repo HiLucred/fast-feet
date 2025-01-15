@@ -1,4 +1,4 @@
-import { DeliveryPhoto } from '@/domain/enterprise/entities/delivery-photo'
+import { DeliveryPhoto } from '@/domain/app/enterprise/entities/delivery-photo'
 
 export abstract class DeliveryPhotosRepository {
   abstract create(deliveryPhoto: DeliveryPhoto): Promise<void>

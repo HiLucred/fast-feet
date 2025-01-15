@@ -1,4 +1,4 @@
-import { Order } from '@/domain/enterprise/entities/order'
+import { Order } from '@/domain/app/enterprise/entities/order'
 
 export abstract class OrdersRepository {
   abstract create(order: Order): Promise<void>

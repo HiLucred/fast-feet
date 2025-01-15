@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Order, OrderProps } from '@/domain/enterprise/entities/order'
-import { Recipient } from '@/domain/enterprise/entities/recipient'
-import { Address } from '@/domain/enterprise/entities/value-objects/address'
+import { Order, OrderProps } from '@/domain/app/enterprise/entities/order'
+import { Recipient } from '@/domain/app/enterprise/entities/recipient'
+import { Address } from '@/domain/app/enterprise/entities/value-objects/address'
 import { faker } from '@faker-js/faker'
 
 export const makeRecipient = (

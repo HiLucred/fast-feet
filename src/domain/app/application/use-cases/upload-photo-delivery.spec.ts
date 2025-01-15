@@ -52,13 +52,15 @@ describe('Upload Photo Delivery Use Case', () => {
   })
 
   it('should not be able to upload photo delivery with invalid file type', async () => {
+    const INVALID_FILE_TYPE = 'image/pdf'
+
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
       orderId: order.id.toString,
       fileName: 'delivery-photo.png',
-      fileType: 'image/pdf',
+      fileType: INVALID_FILE_TYPE,
       body: Buffer.from(''),
     })
 

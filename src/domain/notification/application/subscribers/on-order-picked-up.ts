@@ -1,6 +1,6 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/domain-handler'
-import { OrderPickedUpEvent } from '@/domain/enterprise/events/order-picked-up-event'
+import { OrderPickedUpEvent } from '@/domain/app/enterprise/events/order-picked-up-event'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 
 export class OnOrderPickedUp implements EventHandler {

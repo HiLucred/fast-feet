@@ -1,6 +1,6 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/domain-handler'
-import { OrderPendingEvent } from '@/domain/enterprise/events/order-pending-event'
+import { OrderPendingEvent } from '@/domain/app/enterprise/events/order-pending-event'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 
 export class OnOrderPending implements EventHandler {

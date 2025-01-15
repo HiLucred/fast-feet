@@ -3,7 +3,7 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { DeliveryPhotosRepository } from '../repositories/delivery-photos-repository'
 import { Uploader } from '../storage/uploader'
-import { DeliveryPhoto } from '@/domain/enterprise/entities/delivery-photo'
+import { DeliveryPhoto } from '@/domain/app/enterprise/entities/delivery-photo'
 import { InvalidDeliveryPhotoTypeError } from './errors/invalid-delivery-photo-type'
 
 interface UploadPhotoDeliveryUseCaseRequest {

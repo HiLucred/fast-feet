@@ -1,9 +1,9 @@
 import { OrdersRepository } from '../repositories/orders-repository'
 import { Either, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { Order } from '@/domain/enterprise/entities/order'
-import { Recipient } from '@/domain/enterprise/entities/recipient'
-import { Address } from '@/domain/enterprise/entities/value-objects/address'
+import { Order } from '@/domain/app/enterprise/entities/order'
+import { Recipient } from '@/domain/app/enterprise/entities/recipient'
+import { Address } from '@/domain/app/enterprise/entities/value-objects/address'
 
 interface CreateOrderUseCaseRequest {
   recipientName: string

@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Courier, CourierProps } from '@/domain/enterprise/entities/courier'
+import { Courier, CourierProps } from '@/domain/app/enterprise/entities/courier'
 import { faker } from '@faker-js/faker'
 
 export const makeCourier = (

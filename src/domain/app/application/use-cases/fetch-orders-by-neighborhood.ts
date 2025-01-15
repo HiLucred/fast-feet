@@ -1,6 +1,6 @@
 import { Either, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
-import { Order } from '@/domain/enterprise/entities/order'
+import { Order } from '@/domain/app/enterprise/entities/order'
 
 interface FetchOrdersByNeighborhoodUseCaseRequest {
   neighborhood: string

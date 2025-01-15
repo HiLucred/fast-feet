@@ -3,7 +3,7 @@ import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { faker } from '@faker-js/faker'
-import { Courier } from '@/domain/enterprise/entities/courier'
+import { Courier } from '@/domain/app/enterprise/entities/courier'
 
 describe('Create Courier Use Case', () => {
   let inMemoryCouriersRepository: InMemoryCouriersRepository

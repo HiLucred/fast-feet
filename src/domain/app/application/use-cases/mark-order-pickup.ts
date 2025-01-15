@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { Order } from '@/domain/enterprise/entities/order'
+import { Order } from '@/domain/app/enterprise/entities/order'
 
 interface MarkOrderPickupUseCaseRequest {
   orderId: string

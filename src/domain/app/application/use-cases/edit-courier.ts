@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/couriers-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { Courier } from '@/domain/enterprise/entities/courier'
+import { Courier } from '@/domain/app/enterprise/entities/courier'
 
 interface EditCourierUseCaseRequest {
   courierId: string

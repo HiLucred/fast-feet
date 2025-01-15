@@ -1,4 +1,4 @@
-import { Uploader, UploaderParams } from '@/domain/application/storage/uploader'
+import { Uploader, UploaderParams } from '@/domain/app/application/storage/uploader'
 import { randomUUID } from 'crypto'
 
 type Upload = {

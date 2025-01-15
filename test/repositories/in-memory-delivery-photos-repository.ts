@@ -1,5 +1,5 @@
-import { DeliveryPhotosRepository } from '@/domain/application/repositories/delivery-photos-repository'
-import { DeliveryPhoto } from '@/domain/enterprise/entities/delivery-photo'
+import { DeliveryPhotosRepository } from '@/domain/app/application/repositories/delivery-photos-repository'
+import { DeliveryPhoto } from '@/domain/app/enterprise/entities/delivery-photo'
 
 export class InMemoryDeliveryPhotosRepository
   implements DeliveryPhotosRepository

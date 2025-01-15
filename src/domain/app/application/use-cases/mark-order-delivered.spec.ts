@@ -2,7 +2,7 @@ import { InMemoryDeliveryPhotosRepository } from 'test/repositories/in-memory-de
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { MarkOrderDeliveredUseCase } from './mark-order-delivered'
-import { DeliveryPhoto } from '@/domain/enterprise/entities/delivery-photo'
+import { DeliveryPhoto } from '@/domain/app/enterprise/entities/delivery-photo'
 import { makeOrder } from 'test/factories/make-order'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { faker } from '@faker-js/faker'

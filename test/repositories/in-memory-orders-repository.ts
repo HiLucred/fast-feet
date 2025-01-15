@@ -1,6 +1,6 @@
-import { OrdersRepository } from 'src/domain/application/repositories/orders-repository'
+import { OrdersRepository } from '@/domain/app/application/repositories/orders-repository'
 import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
-import { Order } from '@/domain/enterprise/entities/order'
+import { Order } from '@/domain/app/enterprise/entities/order'
 import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryOrdersRepository implements OrdersRepository {

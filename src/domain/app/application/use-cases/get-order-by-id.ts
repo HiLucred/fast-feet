@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { OrdersRepository } from '../repositories/orders-repository'
-import { Order } from '@/domain/enterprise/entities/order'
+import { Order } from '@/domain/app/enterprise/entities/order'
 
 interface GetOrderByIdUseCaseRequest {
   orderId: string

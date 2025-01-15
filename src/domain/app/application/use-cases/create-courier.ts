@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/couriers-repository'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { HashGenerator } from '../cryptography/hash-generator'
-import { Courier } from '@/domain/enterprise/entities/courier'
+import { Courier } from '@/domain/app/enterprise/entities/courier'
 
 interface CreateCourierUseCaseRequest {
   name: string

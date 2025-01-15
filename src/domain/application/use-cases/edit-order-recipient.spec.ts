@@ -21,7 +21,6 @@ describe('Edit Order Recipient Use Case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
       recipient: { name: 'John Doe', city: 'Rio Branco' },
     })
@@ -33,18 +32,5 @@ describe('Edit Order Recipient Use Case', () => {
         result.value.order.recipient,
       )
     }
-  })
-
-  it('should not be able to edit a order without admin role', async () => {
-    const order = makeOrder()
-    inMemoryOrdersRepository.create(order)
-
-    const result = await sut.execute({
-      userRole: 'courier',
-      orderId: order.id.toString,
-      recipient: { name: 'John Doe', city: 'Rio Branco' },
-    })
-
-    expect(result.isLeft()).toBeTruthy()
   })
 })

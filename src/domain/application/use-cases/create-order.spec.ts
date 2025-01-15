@@ -18,7 +18,6 @@ describe('Create Order Use Case', () => {
 
   it('should be able to create a order', async () => {
     const result = await sut.execute({
-      userRole: 'admin',
       recipientName: faker.person.firstName(),
       recipientPhoneNumber: faker.phone.number(),
       address: {
@@ -38,28 +37,8 @@ describe('Create Order Use Case', () => {
     }
   })
 
-  it('should not be able to create a order without admin role', async () => {
-    const result = await sut.execute({
-      userRole: 'courier',
-      recipientName: faker.person.firstName(),
-      recipientPhoneNumber: faker.phone.number(),
-      address: {
-        zipCode: faker.location.zipCode(),
-        street: faker.location.street(),
-        neighborhood: 'Jardim das Flores',
-        city: faker.location.city(),
-        number: faker.location.buildingNumber(),
-        state: faker.location.state(),
-      },
-    })
-
-    expect(result.isLeft()).toBeTruthy()
-    expect(inMemoryOrdersRepository.orders).toHaveLength(0)
-  })
-
   it('should be able to create a recipient on database', async () => {
     const result = await sut.execute({
-      userRole: 'admin',
       recipientName: faker.person.firstName(),
       recipientPhoneNumber: faker.phone.number(),
       address: {

@@ -22,7 +22,6 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
     })
 
@@ -30,25 +29,11 @@ describe('Delete Order Use case', () => {
     expect(inMemoryOrdersRepository.orders).toHaveLength(0)
   })
 
-  it('should not be able to delete a order without admin role', async () => {
-    const order = makeOrder()
-    inMemoryOrdersRepository.create(order)
-
-    const result = await sut.execute({
-      userRole: 'courier',
-      orderId: order.id.toString,
-    })
-
-    expect(result.isLeft())
-    expect(inMemoryOrdersRepository.orders).toHaveLength(1)
-  })
-
   it('should be able to delete a recipient on database', async () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
     })
 
@@ -61,7 +46,6 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
     })
 

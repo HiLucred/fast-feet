@@ -19,7 +19,6 @@ describe('Edit Courier Use Case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      userRole: 'admin',
       courierId: courier.id.toString,
       name: faker.person.firstName(),
       cpf: '90990909090',
@@ -32,22 +31,5 @@ describe('Edit Courier Use Case', () => {
         result.value.courier,
       )
     }
-  })
-
-  it('should not be able to edit a courier without admin role', async () => {
-    const courier = makeCourier({
-      name: 'John Doe',
-    })
-    inMemoryCouriersRepository.create(courier)
-
-    const result = await sut.execute({
-      userRole: 'courier',
-      courierId: courier.id.toString,
-      name: faker.person.firstName(),
-      cpf: '90990909090',
-      password: faker.internet.password(),
-    })
-
-    expect(result.isLeft()).toBeTruthy()
   })
 })

@@ -5,7 +5,6 @@ import { HashGenerator } from '../cryptography/hash-generator'
 import { Courier } from '@/domain/enterprise/entities/courier'
 
 interface CreateCourierUseCaseRequest {
-  userRole: string
   name: string
   cpf: string
   password: string
@@ -23,15 +22,10 @@ export class CreateCourierUseCase {
   ) {}
 
   async execute({
-    userRole,
     name,
     cpf,
     password,
   }: CreateCourierUseCaseRequest): Promise<CreateCourierUseCaseResponse> {
-    if (userRole !== 'admin') {
-      return left(new NotAllowedError())
-    }
-
     const hasCourierWithSameCpf = await this.courierRepository.findByCpf(cpf)
 
     if (hasCourierWithSameCpf) {

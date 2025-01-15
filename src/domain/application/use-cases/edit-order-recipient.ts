@@ -2,11 +2,9 @@ import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Order } from '@/domain/enterprise/entities/order'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Address } from '@/domain/enterprise/entities/value-objects/address'
 
 interface EditOrderUseCaseRequest {
-  userRole: string
   orderId: string
   recipient: Partial<{
     name: string
@@ -26,14 +24,9 @@ export class EditOrderUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute({
-    userRole,
     orderId,
     recipient,
   }: EditOrderUseCaseRequest): Promise<EditOrderUseCaseResponse> {
-    if (userRole !== 'admin') {
-      return left(new NotAllowedError())
-    }
-
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {

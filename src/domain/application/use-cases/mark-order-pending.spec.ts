@@ -31,29 +31,12 @@ describe('Mark Order Pending Use case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
       courierId: courier.id.toString,
     })
 
     expect(result.isRight())
     expect(inMemoryOrdersRepository.orders[0].state).toEqual('Pending')
-  })
-
-  it('should be able to mark a order as pending without admin role', async () => {
-    const order = makeOrder()
-    inMemoryOrdersRepository.create(order)
-
-    const courier = makeCourier()
-    inMemoryCouriersRepository.create(courier)
-
-    const result = await sut.execute({
-      userRole: 'courier',
-      orderId: order.id.toString,
-      courierId: courier.id.toString,
-    })
-
-    expect(result.isLeft())
   })
 
   it('should be able to set a recipient id in an order', async () => {
@@ -64,7 +47,6 @@ describe('Mark Order Pending Use case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      userRole: 'admin',
       orderId: order.id.toString,
       courierId: courier.id.toString,
     })

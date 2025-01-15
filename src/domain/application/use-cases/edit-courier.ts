@@ -5,7 +5,6 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Courier } from '@/domain/enterprise/entities/courier'
 
 interface EditCourierUseCaseRequest {
-  userRole: string
   courierId: string
   cpf: string
   name: string
@@ -21,16 +20,11 @@ export class EditCourierUseCase {
   constructor(private readonly couriersRepository: CouriersRepository) {}
 
   async execute({
-    userRole,
     courierId,
     cpf,
     name,
     password,
   }: EditCourierUseCaseRequest): Promise<EditCourierUseCaseResponse> {
-    if (userRole !== 'admin') {
-      return left(new NotAllowedError())
-    }
-
     const courier = await this.couriersRepository.findById(courierId)
 
     if (!courier) {

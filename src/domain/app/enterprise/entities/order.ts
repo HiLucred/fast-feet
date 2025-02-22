@@ -104,10 +104,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.updatedAt = new Date()
   }
 
-  static create(
-    props: Optional<OrderProps, 'courierId' | 'createdAt'>,
-    id?: UniqueEntityId,
-  ) {
+  static create(props: Optional<OrderProps, 'createdAt'>, id?: UniqueEntityId) {
     const order = new Order(
       {
         createdAt: props.createdAt ?? new Date(),

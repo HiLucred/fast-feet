@@ -1,4 +1,4 @@
-import { Recipient } from '@/domain/enterprise/entitys/recipient'
+import { Recipient } from '@/domain/app/enterprise/entities/recipient'
 
 export abstract class RecipientsRepository {
   abstract create(recipient: Recipient): Promise<void>

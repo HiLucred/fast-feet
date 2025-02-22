@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderState {
+  PENDING
+  PICKEDUP
+  DELIVERED
+}
+
+model Order {
+  id           String     @unique @default(uuid())
+  recipientId  String
+  courierId    String?
+  state        OrderState
+  pickedUpDate DateTime?
+  deliveryDate DateTime?
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime?  @updatedAt() @map("updated_at")
+
+  recipient Recipient @relation(fields: [recipientId], references: [id])
+  courier   Courier?  @relation(fields: [courierId], references: [id])
+
+  @@map("orders")
+}
+
+model Courier {
+  id       String @unique @default(uuid())
+  name     String
+  cpf      String @unique
+  password String
+
+  Order Order[]
+
+  @@map("couriers")
+}
+
+model Recipient {
+  id           String @unique @default(uuid())
+  name         String
+  phoneNumber  Int    @unique
+  zipCode      String @unique
+  neighborhood String
+  street       String
+  number       String
+  city         String
+  state        String
+
+  Order Order[]
+
+  @@map("recipients")
+}
+
+model ADM {
+  id       String @unique @default(uuid())
+  name     String
+  email    String
+  password String
+
+  @@map("adms")
+}

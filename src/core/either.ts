@@ -13,7 +13,6 @@ class Left<L, R> {
     return false
   }
 }
-
 class Right<L, R> {
   readonly value: R
 

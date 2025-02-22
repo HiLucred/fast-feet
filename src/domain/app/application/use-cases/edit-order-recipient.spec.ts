@@ -21,7 +21,7 @@ describe('Edit Order Recipient Use Case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
       recipient: { name: 'John Doe', city: 'Rio Branco' },
     })
 

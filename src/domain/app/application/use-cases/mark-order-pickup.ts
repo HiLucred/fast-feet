@@ -31,7 +31,7 @@ export class MarkOrderPickupUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (order.courierId.toString !== courierId) {
+    if (order.courierId.toString() !== courierId) {
       return left(new NotAllowedError())
     }
 

@@ -41,7 +41,7 @@ describe('Fetch Delivered Orders By Courier', () => {
       )
     }
 
-    const result = await sut.execute({ courierId: courier.id.toString })
+    const result = await sut.execute({ courierId: courier.id.toString() })
 
     expect(result.isRight()).toBeTruthy()
     if (result.isRight()) {

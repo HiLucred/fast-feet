@@ -26,7 +26,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
   async findById(recipientId: string): Promise<Recipient | null> {
     const recipient = this.recipients.find(
-      (recipient) => recipient.id.toString === recipientId,
+      (recipient) => recipient.id.toString() === recipientId,
     )
 
     if (!recipient) return null

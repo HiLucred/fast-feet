@@ -28,8 +28,8 @@ describe('Mark Order Pickup Use Case', () => {
     await inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
-      courierId: courier.id.toString,
+      orderId: order.id.toString(),
+      courierId: courier.id.toString(),
     })
 
     expect(result.isRight()).toBeTruthy()
@@ -46,8 +46,8 @@ describe('Mark Order Pickup Use Case', () => {
     await inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
-      courierId: courier.id.toString,
+      orderId: order.id.toString(),
+      courierId: courier.id.toString(),
     })
 
     expect(result.isRight()).toBeTruthy()

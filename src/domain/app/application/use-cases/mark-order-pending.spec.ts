@@ -31,8 +31,8 @@ describe('Mark Order Pending Use case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
-      courierId: courier.id.toString,
+      orderId: order.id.toString(),
+      courierId: courier.id.toString(),
     })
 
     expect(result.isRight())
@@ -47,8 +47,8 @@ describe('Mark Order Pending Use case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
-      courierId: courier.id.toString,
+      orderId: order.id.toString(),
+      courierId: courier.id.toString(),
     })
 
     expect(result.isRight())

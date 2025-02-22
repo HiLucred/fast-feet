@@ -19,7 +19,7 @@ describe('Edit Courier Use Case', () => {
     inMemoryCouriersRepository.create(courier)
 
     const result = await sut.execute({
-      courierId: courier.id.toString,
+      courierId: courier.id.toString(),
       name: faker.person.firstName(),
       cpf: '90990909090',
       password: faker.internet.password(),

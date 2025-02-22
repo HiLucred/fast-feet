@@ -26,7 +26,7 @@ export class InMemoryCouriersRepository implements CouriersRepository {
 
   async findById(courierId: string): Promise<Courier | null> {
     const courier = this.couriers.find(
-      (courier) => courier.id.toString === courierId,
+      (courier) => courier.id.toString() === courierId,
     )
 
     if (!courier) return null

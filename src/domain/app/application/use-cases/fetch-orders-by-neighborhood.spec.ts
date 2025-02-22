@@ -40,7 +40,7 @@ describe('Fetch Order By Neighborhood Use Case', () => {
 
     const result = await sut.execute({
       neighborhood: order.recipient.address.neighborhood,
-      courierId: FAKE_COURIER_ID.toString,
+      courierId: FAKE_COURIER_ID.toString(),
     })
 
     expect(result.isRight()).toBeTruthy()
@@ -73,7 +73,7 @@ describe('Fetch Order By Neighborhood Use Case', () => {
 
     const result = await sut.execute({
       neighborhood: order.recipient.address.neighborhood,
-      courierId: FAKE_COURIER_ID.toString,
+      courierId: FAKE_COURIER_ID.toString(),
     })
 
     expect(result.isRight()).toBeTruthy()

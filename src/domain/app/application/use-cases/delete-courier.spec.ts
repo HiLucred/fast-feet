@@ -15,7 +15,7 @@ describe('Delete Courier Use Case', () => {
     const courier = makeCourier()
     inMemoryCouriersRepository.create(courier)
 
-    const response = await sut.execute({ courierId: courier.id.toString })
+    const response = await sut.execute({ courierId: courier.id.toString() })
 
     expect(response.isRight())
     expect(inMemoryCouriersRepository.couriers).toHaveLength(0)

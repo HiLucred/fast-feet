@@ -34,7 +34,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   }
 
   async findById(orderId: string): Promise<Order | null> {
-    const order = this.orders.find((item) => item.id.toString === orderId)
+    const order = this.orders.find((item) => item.id.toString() === orderId)
 
     if (!order) return null
 
@@ -51,7 +51,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async findManyByCourierId(courierId: string): Promise<Order[]> {
     const orders = this.orders.filter(
-      (item) => item.courierId?.toString === courierId,
+      (item) => item.courierId?.toString() === courierId,
     )
 
     return orders

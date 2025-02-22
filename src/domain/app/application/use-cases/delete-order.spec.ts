@@ -22,7 +22,7 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isRight())
@@ -34,7 +34,7 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isRight())
@@ -46,7 +46,7 @@ describe('Delete Order Use case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isLeft())

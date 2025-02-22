@@ -33,7 +33,7 @@ describe('Upload Photo Delivery Use Case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
       fileName: 'delivery-photo.png',
       fileType: 'image/png',
       body: Buffer.from(''),
@@ -58,7 +58,7 @@ describe('Upload Photo Delivery Use Case', () => {
     inMemoryOrdersRepository.create(order)
 
     const result = await sut.execute({
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
       fileName: 'delivery-photo.png',
       fileType: INVALID_FILE_TYPE,
       body: Buffer.from(''),

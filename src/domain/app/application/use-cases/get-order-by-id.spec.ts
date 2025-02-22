@@ -20,7 +20,7 @@ describe('Get Order By Id Use Case', () => {
     const order = makeOrder()
     inMemoryOrdersRepository.create(order)
 
-    const result = await sut.execute({ orderId: order.id.toString })
+    const result = await sut.execute({ orderId: order.id.toString() })
 
     expect(result.isRight()).toBeTruthy()
     if (result.isRight()) {

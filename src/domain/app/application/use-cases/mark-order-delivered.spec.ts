@@ -37,7 +37,7 @@ describe('Mark Order Delivered Use Case', () => {
 
     inMemoryDeliveryPhotosRepository.create(
       DeliveryPhoto.create({
-        orderId: order.id.toString,
+        orderId: order.id.toString(),
         title: faker.string.alpha(),
         url: faker.internet.url(),
       }),
@@ -45,7 +45,7 @@ describe('Mark Order Delivered Use Case', () => {
 
     const result = await sut.execute({
       courierId: FAKE_COURIER_ID,
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isRight()).toBeTruthy()
@@ -66,7 +66,7 @@ describe('Mark Order Delivered Use Case', () => {
 
     const result = await sut.execute({
       courierId: FAKE_COURIER_ID,
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isLeft()).toBeTruthy()
@@ -87,7 +87,7 @@ describe('Mark Order Delivered Use Case', () => {
 
     const result = await sut.execute({
       courierId: FAKE_COURIER_ID_2,
-      orderId: order.id.toString,
+      orderId: order.id.toString(),
     })
 
     expect(result.isLeft()).toBeTruthy()

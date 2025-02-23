@@ -13,13 +13,18 @@ enum OrderState {
   DELIVERED
 }
 
+enum UserRole {
+  ADMIN
+  COURIER
+}
+
 model Order {
   id           String     @unique @default(uuid())
-  recipientId  String
-  courierId    String?
+  recipientId  String     @map("recipient_id")
+  courierId    String?    @map("courier_id")
   state        OrderState
-  pickedUpDate DateTime?
-  deliveryDate DateTime?
+  pickedUpDate DateTime?  @map("picked_up_date")
+  deliveryDate DateTime?  @map("delivery_date")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime?  @updatedAt() @map("updated_at")
 
@@ -30,10 +35,11 @@ model Order {
 }
 
 model Courier {
-  id       String @unique @default(uuid())
+  id       String   @unique @default(uuid())
   name     String
-  cpf      String @unique
+  cpf      String   @unique
   password String
+  role     UserRole @default(COURIER)
 
   Order Order[]
 
@@ -43,8 +49,8 @@ model Courier {
 model Recipient {
   id           String @unique @default(uuid())
   name         String
-  phoneNumber  Int    @unique
-  zipCode      String @unique
+  phoneNumber  Int    @unique @map("phone_number")
+  zipCode      String @unique @map("zip_code")
   neighborhood String
   street       String
   number       String
@@ -56,11 +62,12 @@ model Recipient {
   @@map("recipients")
 }
 
-model ADM {
-  id       String @unique @default(uuid())
+model Adm {
+  id       String   @unique @default(uuid())
   name     String
   email    String
   password String
+  role     UserRole @default(ADMIN)
 
   @@map("adms")
 }

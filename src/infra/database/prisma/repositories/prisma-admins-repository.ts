@@ -1,8 +1,10 @@
 import { AdminsRepository } from '@/domain/app/application/repositories/admins-repository'
 import { Admin } from '@/domain/app/enterprise/entities/admin'
-import { PrismaService } from '../prisma.service'
+import { PrismaService } from '../services/prisma.service'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class PrismaAdminsRepository implements AdminsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
@@ -17,7 +19,7 @@ export class PrismaAdminsRepository implements AdminsRepository {
   }
 
   async findByEmail(email: string): Promise<Admin | null> {
-    const admin = await this.prismaService.adm.findFirst({
+    const admin = await this.prismaService.adm.findUnique({
       where: {
         email,
       },

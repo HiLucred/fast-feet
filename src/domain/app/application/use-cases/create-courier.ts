@@ -1,8 +1,9 @@
 import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/couriers-repository'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { HashGenerator } from '../cryptography/hash-generator'
 import { Courier } from '@/domain/app/enterprise/entities/courier'
+import { Injectable } from '@nestjs/common'
+import { ConflictError } from '@/core/errors/conflict-error'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -10,11 +11,9 @@ interface CreateCourierUseCaseRequest {
   password: string
 }
 
-type CreateCourierUseCaseResponse = Either<
-  NotAllowedError,
-  { courier: Courier }
->
+type CreateCourierUseCaseResponse = Either<ConflictError, { courier: Courier }>
 
+@Injectable()
 export class CreateCourierUseCase {
   constructor(
     private readonly courierRepository: CouriersRepository,
@@ -29,7 +28,7 @@ export class CreateCourierUseCase {
     const hasCourierWithSameCpf = await this.courierRepository.findByCpf(cpf)
 
     if (hasCourierWithSameCpf) {
-      return left(new NotAllowedError())
+      return left(new ConflictError())
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)

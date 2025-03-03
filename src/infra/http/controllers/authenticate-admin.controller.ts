@@ -1,3 +1,7 @@
+import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { AuthenticateAdminUseCase } from '@/domain/app/application/use-cases/authenticate-admin'
+import { WrongCredentialsError } from '@/domain/app/application/use-cases/errors/wrong-credentials-error'
 import {
   BadRequestException,
   Body,
@@ -6,10 +10,6 @@ import {
   UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
-import { z } from 'zod'
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { AuthenticateAdminUseCase } from '@/domain/app/application/use-cases/authenticate-admin'
-import { WrongCredentialsError } from '@/domain/app/application/use-cases/errors/wrong-credentials-error'
 
 const authenticateAdminBodySchema = z.object({
   email: z.string(),
@@ -37,8 +37,10 @@ export class AuthenticateAdminController {
       }
     }
 
+    const { accessToken } = admin.value
+
     return {
-      accessToken: admin.value.accessToken,
+      access_token: accessToken,
     }
   }
 }

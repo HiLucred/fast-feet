@@ -5,6 +5,7 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { HashComparer } from '../cryptography/hash-comparer'
 import { Encrypter } from '../cryptography/encrypter'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { Injectable } from '@nestjs/common'
 
 interface AuthenticateCourierUseCaseRequest {
   cpf: string
@@ -16,6 +17,7 @@ type AuthenticateCourierUseCaseResponse = Either<
   { accessToken: string }
 >
 
+@Injectable()
 export class AuthenticateCourierUseCase {
   constructor(
     private readonly couriersRepository: CouriersRepository,
@@ -44,6 +46,7 @@ export class AuthenticateCourierUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: courier.id.toString(),
+      role: 'courier',
     })
 
     return right({ accessToken })

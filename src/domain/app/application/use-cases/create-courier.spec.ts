@@ -1,9 +1,9 @@
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { faker } from '@faker-js/faker'
 import { Courier } from '@/domain/app/enterprise/entities/courier'
+import { ConflictError } from '@/core/errors/conflict-error'
 
 describe('Create Courier Use Case', () => {
   let inMemoryCouriersRepository: InMemoryCouriersRepository
@@ -51,7 +51,7 @@ describe('Create Courier Use Case', () => {
 
     expect(result.isLeft()).toBeTruthy()
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(NotAllowedError)
+      expect(result.value).toBeInstanceOf(ConflictError)
     }
   })
 

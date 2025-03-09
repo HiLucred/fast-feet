@@ -3,7 +3,6 @@ import { AuthenticateAdminController } from './controllers/authenticate-admin.co
 import { AuthenticateAdminUseCase } from '@/domain/app/application/use-cases/authenticate-admin'
 import { DatabaseModule } from '../database/prisma/database.module'
 import { CryptographyModule } from '../cryptography/cryptography.module'
-import { GreetingsController } from './controllers/greetings.controller'
 import { CreateCourierController } from './controllers/create-courier.controller'
 import { CreateCourierUseCase } from '@/domain/app/application/use-cases/create-courier'
 import { AuthenticateCourierController } from './controllers/authenticate-courier.controller'
@@ -12,7 +11,6 @@ import { AuthenticateCourierUseCase } from '@/domain/app/application/use-cases/a
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
-    GreetingsController,
     AuthenticateAdminController,
     AuthenticateCourierController,
     CreateCourierController,

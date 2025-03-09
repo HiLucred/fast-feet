@@ -3,6 +3,7 @@ import { CouriersRepository } from '../repositories/couriers-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Courier } from '@/domain/app/enterprise/entities/courier'
+import { CPF } from '@/domain/app/enterprise/entities/value-objects/cpf'
 
 interface EditCourierUseCaseRequest {
   courierId: string
@@ -31,7 +32,13 @@ export class EditCourierUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    courier.cpf = cpf
+    const cpfUpdated = CPF.create(cpf)
+
+    if (cpfUpdated.isLeft()) {
+      return left(cpfUpdated.value)
+    }
+
+    courier.updateCpf(cpfUpdated.value.toString())
     courier.name = name
     courier.password = password
 

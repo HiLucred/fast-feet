@@ -2,8 +2,9 @@ import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers
 import { CreateCourierUseCase } from './create-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { faker } from '@faker-js/faker'
-import { Courier } from '@/domain/app/enterprise/entities/courier'
 import { ConflictError } from '@/core/errors/conflict-error'
+import { CPF } from '../../enterprise/entities/value-objects/cpf'
+import { makeCourier } from 'test/factories/make-courier'
 
 describe('Create Courier Use Case', () => {
   let inMemoryCouriersRepository: InMemoryCouriersRepository
@@ -19,7 +20,7 @@ describe('Create Courier Use Case', () => {
   it('should be able to create a courier', async () => {
     const courier = await sut.execute({
       name: faker.person.fullName(),
-      cpf: '888888888',
+      cpf: '81810323233',
       password: faker.internet.password(),
     })
 
@@ -33,18 +34,15 @@ describe('Create Courier Use Case', () => {
   })
 
   it('should not be able to create a courier with same cpf', async () => {
-    const CPF = '888888888'
+    const SAME_CPF = '81810398012'
+    const VALID_CPF = CPF.create(SAME_CPF)
 
     inMemoryCouriersRepository.create(
-      Courier.create({
-        cpf: CPF,
-        name: faker.person.fullName(),
-        password: faker.internet.password(),
-      }),
+      makeCourier({ cpf: VALID_CPF.value as CPF }),
     )
 
     const result = await sut.execute({
-      cpf: CPF,
+      cpf: SAME_CPF,
       name: faker.person.fullName(),
       password: faker.internet.password(),
     })
@@ -61,9 +59,10 @@ describe('Create Courier Use Case', () => {
     const courier = await sut.execute({
       password: PASSWORD,
       name: faker.person.fullName(),
-      cpf: '888888888',
+      cpf: '81810398012',
     })
 
+    expect(courier.isRight()).toBeTruthy()
     if (courier.isRight()) {
       const hashedPassword = await fakeHash.compare(
         PASSWORD,

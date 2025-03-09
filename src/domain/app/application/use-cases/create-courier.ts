@@ -4,6 +4,7 @@ import { HashGenerator } from '../cryptography/hash-generator'
 import { Courier } from '@/domain/app/enterprise/entities/courier'
 import { Injectable } from '@nestjs/common'
 import { ConflictError } from '@/core/errors/conflict-error'
+import { CPF } from '../../enterprise/entities/value-objects/cpf'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -33,8 +34,15 @@ export class CreateCourierUseCase {
 
     const hashedPassword = await this.hashGenerator.hash(password)
 
+    const cpfObjectValue = CPF.create(cpf) // Objeto de valor
+
+    //Validação da integridade do CPF
+    if (cpfObjectValue.isLeft()) {
+      return left(cpfObjectValue.value)
+    }
+
     const courier = Courier.create({
-      cpf,
+      cpf: cpfObjectValue.value,
       name,
       password: hashedPassword,
     })

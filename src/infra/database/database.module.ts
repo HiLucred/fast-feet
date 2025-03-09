@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
-import { PrismaService } from './services/prisma.service'
-import { PrismaAdminsRepository } from './repositories/prisma-admins-repository'
 import { AdminsRepository } from '@/domain/app/application/repositories/admins-repository'
 import { CouriersRepository } from '@/domain/app/application/repositories/couriers-repository'
-import { PrismaCouriersRepository } from './repositories/prisma-couriers-repository'
+import { PrismaAdminsRepository } from './prisma/repositories/prisma-admins-repository'
+import { PrismaService } from './prisma/services/prisma.service'
+import { PrismaCouriersRepository } from './prisma/repositories/prisma-couriers-repository'
 
 @Module({
   providers: [

@@ -3,6 +3,7 @@ import { AuthenticateCourierUseCase } from './authenticate-courier'
 import { FakeHash } from 'test/cryptography/fake-hash'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
 import { makeCourier } from 'test/factories/make-courier'
+import { CPF } from '../../enterprise/entities/value-objects/cpf'
 
 describe('Authenticate Courier Use Case', () => {
   let inMemoryCouriersRepository: InMemoryCouriersRepository
@@ -22,13 +23,16 @@ describe('Authenticate Courier Use Case', () => {
   })
 
   it('should be able to authenticate a courier', async () => {
-    const CPF = '88888888'
     const PASSWORD = 'MyPassword999'
+    const FAKE_CPF = '12345678901' // 11 Caracteres
 
-    const courier = makeCourier({ cpf: CPF, password: PASSWORD })
+    const courier = makeCourier({
+      cpf: new CPF({ value: FAKE_CPF }),
+      password: PASSWORD,
+    })
     await inMemoryCouriersRepository.create(courier)
 
-    const result = await sut.execute({ cpf: CPF, password: PASSWORD })
+    const result = await sut.execute({ cpf: FAKE_CPF, password: PASSWORD })
 
     expect(result.isRight())
     if (result.isRight()) {

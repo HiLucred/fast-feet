@@ -3,7 +3,6 @@ import {
   Body,
   ConflictException,
   Controller,
-  HttpCode,
   Post,
   UseGuards,
   UsePipes,
@@ -29,7 +28,6 @@ export class CreateCourierController {
 
   @Post()
   @Roles('admin')
-  @HttpCode(409)
   @UsePipes(new ZodValidationPipe(courierBodySchema)) // Verifica se a pessoa está passando o body correto
   async handle(@Body() body: CourierBodySchema) {
     const { name, cpf, password } = body

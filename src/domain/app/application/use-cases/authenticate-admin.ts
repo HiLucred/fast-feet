@@ -34,7 +34,10 @@ export class AuthenticateAdminUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const isPasswordValid = this.hashComparer.compare(password, admin.password)
+    const isPasswordValid = await this.hashComparer.compare(
+      password,
+      admin.password,
+    )
 
     if (!isPasswordValid) {
       return left(new WrongCredentialsError())

@@ -34,15 +34,15 @@ describe('Create Courier Use Case', () => {
   })
 
   it('should not be able to create a courier with same cpf', async () => {
-    const SAME_CPF = '81810398012'
-    const VALID_CPF = CPF.create(SAME_CPF)
+    const FAKE_CPF = '81810398012'
+    const cpf = CPF.create(FAKE_CPF)
 
-    inMemoryCouriersRepository.create(
-      makeCourier({ cpf: VALID_CPF.value as CPF }),
-    )
+    if (cpf.isRight()) {
+      inMemoryCouriersRepository.create(makeCourier({ cpf: cpf.value }))
+    }
 
     const result = await sut.execute({
-      cpf: SAME_CPF,
+      cpf: FAKE_CPF,
       name: faker.person.fullName(),
       password: faker.internet.password(),
     })

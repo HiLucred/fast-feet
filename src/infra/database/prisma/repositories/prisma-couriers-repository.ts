@@ -1,21 +1,18 @@
 import { CouriersRepository } from '@/domain/app/application/repositories/couriers-repository'
 import { Courier } from '@/domain/app/enterprise/entities/courier'
-import { PrismaService } from '../services/prisma.service'
+import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
-import { CPF } from '@/domain/app/enterprise/entities/value-objects/cpf'
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { PrismaCourierMapper } from '../mappers/prisma-courier-mapper'
 
 @Injectable()
 export class PrismaCouriersRepository implements CouriersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(courier: Courier): Promise<void> {
+    const data = PrismaCourierMapper.toPrisma(courier)
+
     await this.prisma.courier.create({
-      data: {
-        cpf: courier.cpf.toString(),
-        name: courier.name,
-        password: courier.password,
-      },
+      data,
     })
   }
 
@@ -41,19 +38,7 @@ export class PrismaCouriersRepository implements CouriersRepository {
 
     if (!courier) return null
 
-    const cpfValueObject = CPF.create(courier.cpf)
-    if (cpfValueObject.isLeft()) {
-      throw new Error(cpfValueObject.value.message)
-    }
-
-    return Courier.create(
-      {
-        cpf: cpfValueObject.value,
-        name: courier.name,
-        password: courier.password,
-      },
-      new UniqueEntityId(courier.id),
-    )
+    return PrismaCourierMapper.toDomain(courier)
   }
 
   async findByCpf(cpf: string): Promise<Courier | null> {
@@ -65,15 +50,6 @@ export class PrismaCouriersRepository implements CouriersRepository {
 
     if (!courier) return null
 
-    const cpfValueObject = CPF.create(courier.cpf)
-    if (cpfValueObject.isLeft()) {
-      throw new Error(cpfValueObject.value.message)
-    }
-
-    return Courier.create({
-      cpf: cpfValueObject.value,
-      name: courier.name,
-      password: courier.password,
-    })
+    return PrismaCourierMapper.toDomain(courier)
   }
 }

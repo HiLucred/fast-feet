@@ -1,13 +1,15 @@
 import { AppModule } from '@/infra/app.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import { hash } from 'bcrypt'
 import request from 'supertest'
 
-describe('Authenticate admin (E2E)', () => {
+describe('Create courier (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
+  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -16,12 +18,13 @@ describe('Authenticate admin (E2E)', () => {
 
     app = moduleRef.createNestApplication()
     prisma = app.get(PrismaService)
+    jwt = app.get(JwtService)
 
     await app.init()
   })
 
-  test('[POST] /sessions/admin', async () => {
-    const adm = await prisma.adm.create({
+  test('[POST] /courier', async () => {
+    const user = await prisma.adm.create({
       data: {
         name: 'John Doe',
         email: 'johndoe@email.com',
@@ -29,16 +32,17 @@ describe('Authenticate admin (E2E)', () => {
       },
     })
 
+    const accessToken = await jwt.signAsync({ sub: user.id, role: 'admin' })
+
     const response = await request(app.getHttpServer())
-      .post('/sessions/admin')
+      .post('/courier')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        email: 'johndoe@email.com',
-        password: 'mystrongpassword',
+        name: 'Mark',
+        cpf: '81888118188',
+        password: 'courierpassword',
       })
 
     expect(response.status).toEqual(201)
-    expect(response.body).toEqual({
-      access_token: expect.any(String),
-    })
   })
 })

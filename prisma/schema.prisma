@@ -35,11 +35,13 @@ model Order {
 }
 
 model Courier {
-  id       String   @unique @default(uuid())
-  name     String
-  cpf      String   @unique
-  password String
-  role     UserRole @default(COURIER)
+  id        String    @unique @default(uuid())
+  name      String
+  cpf       String    @unique
+  password  String
+  role      UserRole  @default(COURIER)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt() @map("updated_at")
 
   Order Order[]
 
@@ -47,15 +49,17 @@ model Courier {
 }
 
 model Recipient {
-  id           String @unique @default(uuid())
+  id           String    @unique @default(uuid())
   name         String
-  phoneNumber  Int    @unique @map("phone_number")
-  zipCode      String @unique @map("zip_code")
+  phoneNumber  Int       @unique @map("phone_number")
+  zipCode      String    @unique @map("zip_code")
   neighborhood String
   street       String
   number       String
   city         String
   state        String
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @updatedAt() @map("updated_at")
 
   Order Order[]
 
@@ -63,11 +67,13 @@ model Recipient {
 }
 
 model Adm {
-  id       String   @unique @default(uuid())
-  name     String
-  email    String   @unique
-  password String
-  role     UserRole @default(ADMIN)
+  id        String    @unique @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      UserRole  @default(ADMIN)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt() @map("updated_at")
 
   @@map("adms")
 }

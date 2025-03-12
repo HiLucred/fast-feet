@@ -3,6 +3,7 @@ import { FakeHash } from 'test/cryptography/fake-hash'
 import { AuthenticateAdminUseCase } from './authenticate-admin'
 import { InMemoryAdminsRepository } from 'test/repositories/in-memory-admins-repository'
 import { makeAdmin } from 'test/factories/make-admin'
+import * as bcrypt from 'bcrypt'
 
 describe('Authenticate Admin', () => {
   let inMemoryAdminsRepository: InMemoryAdminsRepository
@@ -25,7 +26,9 @@ describe('Authenticate Admin', () => {
     const EMAIL = 'johndoe@email.com'
     const PASSWORD = 'mypassword'
 
-    const admin = makeAdmin({ email: EMAIL, password: PASSWORD })
+    const hashedPassword = await fakeHash.hash(PASSWORD)
+
+    const admin = makeAdmin({ email: EMAIL, password: hashedPassword })
     await inMemoryAdminsRepository.create(admin)
 
     const result = await sut.execute({

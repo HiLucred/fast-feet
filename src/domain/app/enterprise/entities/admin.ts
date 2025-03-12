@@ -7,7 +7,7 @@ export interface AdminProps {
   email: string
   password: string
   createdAt: Date
-  updated?: Date
+  updatedAt?: Date | null
 }
 
 export class Admin extends Entity<AdminProps> {
@@ -17,6 +17,7 @@ export class Admin extends Entity<AdminProps> {
 
   set name(name: string) {
     this.props.name = name
+    this.touch()
   }
 
   get email() {
@@ -25,6 +26,7 @@ export class Admin extends Entity<AdminProps> {
 
   set email(email: string) {
     this.props.email = email
+    this.touch()
   }
 
   get password() {
@@ -33,6 +35,19 @@ export class Admin extends Entity<AdminProps> {
 
   set password(password: string) {
     this.props.password = password
+    this.touch()
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
   }
 
   static create(props: Optional<AdminProps, 'createdAt'>, id?: UniqueEntityId) {

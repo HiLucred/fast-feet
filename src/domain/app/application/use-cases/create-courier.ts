@@ -5,6 +5,7 @@ import { Courier } from '@/domain/app/enterprise/entities/courier'
 import { Injectable } from '@nestjs/common'
 import { ConflictError } from '@/core/errors/conflict-error'
 import { CPF } from '../../enterprise/entities/value-objects/cpf'
+import { InvalidDataError } from '@/core/errors/invalid-data-error'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -12,7 +13,10 @@ interface CreateCourierUseCaseRequest {
   password: string
 }
 
-type CreateCourierUseCaseResponse = Either<ConflictError, { courier: Courier }>
+type CreateCourierUseCaseResponse = Either<
+  ConflictError | InvalidDataError,
+  { courier: Courier }
+>
 
 @Injectable()
 export class CreateCourierUseCase {
@@ -32,14 +36,14 @@ export class CreateCourierUseCase {
       return left(new ConflictError())
     }
 
-    const hashedPassword = await this.hashGenerator.hash(password)
-
     const cpfObjectValue = CPF.create(cpf) // Objeto de valor
 
     //Validação da integridade do CPF
     if (cpfObjectValue.isLeft()) {
       return left(cpfObjectValue.value)
     }
+
+    const hashedPassword = await this.hashGenerator.hash(password)
 
     const courier = Courier.create({
       cpf: cpfObjectValue.value,

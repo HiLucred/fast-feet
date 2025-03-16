@@ -8,6 +8,7 @@ datasource db {
 }
 
 enum OrderState {
+  AVAILABLE
   PENDING
   PICKEDUP
   DELIVERED
@@ -19,8 +20,8 @@ enum UserRole {
 }
 
 model Order {
-  id           String     @unique @default(uuid())
-  recipientId  String     @map("recipient_id")
+  id           String     @id @default(uuid())
+  recipientId  String     @unique @map("recipient_id")
   courierId    String?    @map("courier_id")
   state        OrderState
   pickedUpDate DateTime?  @map("picked_up_date")
@@ -35,7 +36,7 @@ model Order {
 }
 
 model Courier {
-  id        String    @unique @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   cpf       String    @unique
   password  String
@@ -43,16 +44,16 @@ model Courier {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt() @map("updated_at")
 
-  Order Order[]
+  orders Order[]
 
   @@map("couriers")
 }
 
 model Recipient {
-  id           String    @unique @default(uuid())
+  id           String    @id @default(uuid())
   name         String
-  phoneNumber  Int       @unique @map("phone_number")
-  zipCode      String    @unique @map("zip_code")
+  phoneNumber  String    @map("phone_number")
+  zipCode      String    @map("zip_code")
   neighborhood String
   street       String
   number       String
@@ -61,13 +62,13 @@ model Recipient {
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime? @updatedAt() @map("updated_at")
 
-  Order Order[]
+  order Order?
 
   @@map("recipients")
 }
 
 model Adm {
-  id        String    @unique @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   email     String    @unique
   password  String

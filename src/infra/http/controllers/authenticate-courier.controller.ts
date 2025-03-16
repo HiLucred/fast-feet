@@ -10,6 +10,7 @@ import {
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { WrongCredentialsError } from '@/domain/app/application/use-cases/errors/wrong-credentials-error'
+import { SkipAuth } from '@/infra/auth/skip-auth.decorator'
 
 const authenticateCourierBodySchema = z.object({
   cpf: z.string(),
@@ -19,14 +20,17 @@ const authenticateCourierBodySchema = z.object({
 type AuthencateCourierBody = z.infer<typeof authenticateCourierBodySchema>
 
 @Controller('/sessions')
+@SkipAuth()
 export class AuthenticateCourierController {
   constructor(
     private readonly authenticateCourier: AuthenticateCourierUseCase,
   ) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(authenticateCourierBodySchema))
-  async handle(@Body() body: AuthencateCourierBody) {
+  async handle(
+    @Body(new ZodValidationPipe(authenticateCourierBodySchema))
+    body: AuthencateCourierBody,
+  ) {
     const { cpf, password } = body
 
     const account = await this.authenticateCourier.execute({

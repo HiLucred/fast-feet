@@ -4,6 +4,7 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Order } from '@/domain/app/enterprise/entities/order'
 import { Recipient } from '@/domain/app/enterprise/entities/recipient'
 import { Address } from '@/domain/app/enterprise/entities/value-objects/address'
+import { Injectable } from '@nestjs/common'
 
 interface CreateOrderUseCaseRequest {
   recipientName: string
@@ -20,6 +21,7 @@ interface CreateOrderUseCaseRequest {
 
 type CreateOrderUseCaseResponse = Either<NotAllowedError, { order: Order }>
 
+@Injectable()
 export class CreateOrderUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 

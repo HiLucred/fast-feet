@@ -7,6 +7,8 @@ import { CreateCourierUseCase } from '@/domain/app/application/use-cases/create-
 import { AuthenticateCourierController } from './controllers/authenticate-courier.controller'
 import { AuthenticateCourierUseCase } from '@/domain/app/application/use-cases/authenticate-courier'
 import { DatabaseModule } from '../database/database.module'
+import { CreateOrderController } from './controllers/create-order.controller'
+import { CreateOrderUseCase } from '@/domain/app/application/use-cases/create-order'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -14,11 +16,13 @@ import { DatabaseModule } from '../database/database.module'
     AuthenticateAdminController,
     AuthenticateCourierController,
     CreateCourierController,
+    CreateOrderController,
   ],
   providers: [
     AuthenticateAdminUseCase,
     CreateCourierUseCase,
     AuthenticateCourierUseCase,
+    CreateOrderUseCase,
   ],
 })
 export class HttpModule {}

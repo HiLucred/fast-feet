@@ -24,8 +24,8 @@ export class PrismaCouriersRepository implements CouriersRepository {
     await this.prisma.courier.update({
       where: {
         id: courier.id.toString(),
-      }, // #TODO: Ver isso depois
-      data: {},
+      },
+      data: PrismaCourierMapper.toPrisma(courier),
     })
   }
 

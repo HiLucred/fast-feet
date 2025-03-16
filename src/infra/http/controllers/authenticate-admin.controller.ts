@@ -10,6 +10,7 @@ import {
   UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
+import { SkipAuth } from '@/infra/auth/skip-auth.decorator'
 
 const authenticateAdminBodySchema = z.object({
   email: z.string(),
@@ -19,6 +20,7 @@ const authenticateAdminBodySchema = z.object({
 type AuthenticateAdminBodySchema = z.infer<typeof authenticateAdminBodySchema>
 
 @Controller('/sessions/admin')
+@SkipAuth()
 export class AuthenticateAdminController {
   constructor(private readonly authenticateAdmin: AuthenticateAdminUseCase) {}
 

@@ -10,11 +10,11 @@ import { OrderPendingEvent } from '../events/order-pending-event'
 export interface OrderProps {
   recipient: Recipient
   courierId?: UniqueEntityId
-  state?: OrderState // Pendente, Retirado e Entregue
+  state: OrderState // Pendente, Retirado e Entregue
   pickupDate?: Date // Data de retirada
   deliveryDate?: Date // Data de entrega
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Order extends AggregateRoot<OrderProps> {
@@ -40,7 +40,7 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   markAsPending() {
-    if (this.props.state !== undefined) {
+    if (this.props.state !== 'Available') {
       throw new Error(
         'Cannot set an order to Pending when it has already been defined.',
       )
@@ -104,10 +104,14 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.updatedAt = new Date()
   }
 
-  static create(props: Optional<OrderProps, 'createdAt'>, id?: UniqueEntityId) {
+  static create(
+    props: Optional<OrderProps, 'createdAt' | 'state'>,
+    id?: UniqueEntityId,
+  ) {
     const order = new Order(
       {
         createdAt: props.createdAt ?? new Date(),
+        state: props.state ?? 'Available',
         ...props,
       },
       id,

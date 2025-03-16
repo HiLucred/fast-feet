@@ -21,11 +21,11 @@ describe('Authenticate admin (E2E)', () => {
   })
 
   test('[POST] /sessions/admin', async () => {
-    const adm = await prisma.adm.create({
+    await prisma.adm.create({
       data: {
         name: 'John Doe',
         email: 'johndoe@email.com',
-        password: await hash('mystrongpassword', 8),
+        password: await hash('admin', 8),
       },
     })
 
@@ -33,7 +33,7 @@ describe('Authenticate admin (E2E)', () => {
       .post('/sessions/admin')
       .send({
         email: 'johndoe@email.com',
-        password: 'mystrongpassword',
+        password: 'admin',
       })
 
     expect(response.status).toEqual(201)

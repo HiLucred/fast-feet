@@ -3,6 +3,8 @@ import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Order } from '@/domain/app/enterprise/entities/order'
+import { Injectable } from '@nestjs/common'
+import { OrderWithoutCourierError } from './errors/order-without-courier-error'
 
 interface MarkOrderPickupUseCaseRequest {
   orderId: string
@@ -10,10 +12,11 @@ interface MarkOrderPickupUseCaseRequest {
 }
 
 type MarkOrderPickupUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  ResourceNotFoundError | NotAllowedError | OrderWithoutCourierError,
   { order: Order }
 >
 
+@Injectable()
 export class MarkOrderPickupUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 
@@ -27,8 +30,12 @@ export class MarkOrderPickupUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    if (order.state !== 'Pending') {
+      return left(new NotAllowedError())
+    }
+
     if (!order.courierId) {
-      return left(new ResourceNotFoundError())
+      return left(new OrderWithoutCourierError())
     }
 
     if (order.courierId.toString() !== courierId) {

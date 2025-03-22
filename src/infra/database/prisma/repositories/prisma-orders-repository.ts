@@ -64,7 +64,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async save(order: Order): Promise<void> {
-    await this.prisma.courier.update({
+    await this.prisma.order.update({
       where: {
         id: order.id.toString(),
       },

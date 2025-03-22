@@ -3,6 +3,8 @@ import { OrdersRepository } from '../repositories/orders-repository'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/couriers-repository'
 import { Order } from '@/domain/app/enterprise/entities/order'
+import { Injectable } from '@nestjs/common'
+import { OrderAlreadyPendingError } from './errors/order-already-pending-error'
 
 interface MarkOrderPendingUseCaseRequest {
   orderId: string
@@ -10,10 +12,11 @@ interface MarkOrderPendingUseCaseRequest {
 }
 
 type MarkOrderPendingUseCaseResponse = Either<
-  ResourceNotFoundError,
+  ResourceNotFoundError | OrderAlreadyPendingError,
   { order: Order }
 >
 
+@Injectable()
 export class MarkOrderPendingUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,
@@ -28,6 +31,10 @@ export class MarkOrderPendingUseCase {
 
     if (!order) {
       return left(new ResourceNotFoundError())
+    }
+
+    if (order.state !== 'Available') {
+      return left(new OrderAlreadyPendingError())
     }
 
     const courier = await this.couriersRepository.findById(courierId)

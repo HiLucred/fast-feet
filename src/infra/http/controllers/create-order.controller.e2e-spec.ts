@@ -37,7 +37,6 @@ describe('Create Order (E2E)', () => {
 
     const response = await request(app.getHttpServer())
       .post('/order')
-      .auth(accessToken, { type: 'bearer' })
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         recipientName: faker.person.firstName(),

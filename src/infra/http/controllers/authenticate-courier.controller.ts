@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { WrongCredentialsError } from '@/domain/app/application/use-cases/errors/wrong-credentials-error'
 import { SkipAuth } from '@/infra/auth/skip-auth.decorator'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 const authenticateCourierBodySchema = z.object({
   cpf: z.string(),
@@ -20,13 +21,13 @@ const authenticateCourierBodySchema = z.object({
 type AuthencateCourierBody = z.infer<typeof authenticateCourierBodySchema>
 
 @Controller('/sessions')
-@SkipAuth()
 export class AuthenticateCourierController {
   constructor(
     private readonly authenticateCourier: AuthenticateCourierUseCase,
   ) {}
 
   @Post()
+  @SkipAuth()
   async handle(
     @Body(new ZodValidationPipe(authenticateCourierBodySchema))
     body: AuthencateCourierBody,
@@ -43,6 +44,8 @@ export class AuthenticateCourierController {
 
       switch (error.constructor) {
         case WrongCredentialsError:
+          throw new UnauthorizedException(error.message)
+        case ResourceNotFoundError:
           throw new UnauthorizedException(error.message)
         default:
           throw new BadRequestException(error.message)

@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/couriers-repository'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteCourierUseCaseRequest {
   courierId: string
@@ -8,6 +9,7 @@ interface DeleteCourierUseCaseRequest {
 
 type DeleteCourierUseCaseResponse = Either<ResourceNotFoundError, null>
 
+@Injectable()
 export class DeleteCourierUseCase {
   constructor(private readonly couriersRepository: CouriersRepository) {}
 

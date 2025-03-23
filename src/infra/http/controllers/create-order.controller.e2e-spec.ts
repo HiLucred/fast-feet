@@ -25,7 +25,7 @@ describe('Create Order (E2E)', () => {
   })
 
   test('[POST] /order', async () => {
-    const user = await prisma.adm.create({
+    const admin = await prisma.adm.create({
       data: {
         name: 'John Doe',
         email: 'johndoe2@email.com',
@@ -33,7 +33,7 @@ describe('Create Order (E2E)', () => {
       },
     })
 
-    const accessToken = await jwt.signAsync({ sub: user.id, role: 'admin' })
+    const accessToken = await jwt.signAsync({ sub: admin.id, role: 'admin' })
 
     const response = await request(app.getHttpServer())
       .post('/order')

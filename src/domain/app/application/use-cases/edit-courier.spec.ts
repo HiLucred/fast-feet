@@ -2,14 +2,17 @@ import { makeCourier } from 'test/factories/make-courier'
 import { EditCourierUseCase } from './edit-courier'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers-repository'
 import { faker } from '@faker-js/faker'
+import { FakeHash } from 'test/cryptography/fake-hash'
 
 describe('Edit Courier Use Case', () => {
   let inMemoryCouriersRepository: InMemoryCouriersRepository
+  let fakeHash: FakeHash
   let sut: EditCourierUseCase
 
   beforeEach(() => {
     inMemoryCouriersRepository = new InMemoryCouriersRepository()
-    sut = new EditCourierUseCase(inMemoryCouriersRepository)
+    fakeHash = new FakeHash()
+    sut = new EditCourierUseCase(inMemoryCouriersRepository, fakeHash)
   })
 
   it('should be able to edit a courier', async () => {
@@ -31,5 +34,6 @@ describe('Edit Courier Use Case', () => {
         result.value.courier,
       )
     }
+    console.log(result.value)
   })
 })

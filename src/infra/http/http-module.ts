@@ -15,6 +15,12 @@ import { MarkOrderPickupController } from './controllers/mark-order-pickup.contr
 import { MarkOrderPickupUseCase } from '@/domain/app/application/use-cases/mark-order-pickup'
 import { MarkOrderPendingController } from './controllers/mark-order-pending.controller'
 import { MarkOrderPendingUseCase } from '@/domain/app/application/use-cases/mark-order-pending'
+import { DeleteCourierController } from './controllers/delete-courier.controller'
+import { DeleteCourierUseCase } from '@/domain/app/application/use-cases/delete-courier'
+import { EditCourierController } from './controllers/edit-courier.controller'
+import { EditCourierUseCase } from '@/domain/app/application/use-cases/edit-courier'
+import { EditOrderController } from './controllers/edit-order-recipient.controller'
+import { EditOrderUseCase } from '@/domain/app/application/use-cases/edit-order-recipient'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +32,9 @@ import { MarkOrderPendingUseCase } from '@/domain/app/application/use-cases/mark
     GetOrderByIdController,
     MarkOrderPickupController,
     MarkOrderPendingController,
+    DeleteCourierController,
+    EditCourierController,
+    EditOrderController,
   ],
   providers: [
     AuthenticateAdminUseCase,
@@ -35,6 +44,9 @@ import { MarkOrderPendingUseCase } from '@/domain/app/application/use-cases/mark
     GetOrderByIdUseCase,
     MarkOrderPickupUseCase,
     MarkOrderPendingUseCase,
+    DeleteCourierUseCase,
+    EditCourierUseCase,
+    EditOrderUseCase,
   ],
 })
 export class HttpModule {}

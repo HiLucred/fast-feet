@@ -28,7 +28,7 @@ describe('Get Order by Id (E2E)', () => {
     const courier = await prisma.courier.create({
       data: {
         name: 'Daniel Smith',
-        cpf: '81818181',
+        cpf: '9981818181',
         password: await hash('mystrongpassword', 8),
       },
     })

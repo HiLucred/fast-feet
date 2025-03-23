@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR'
 import { hash } from 'bcrypt'
 import request from 'supertest'
 
-describe('Mark Order Pickup (E2E)', () => {
+describe('Edit Courier (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -24,7 +24,7 @@ describe('Mark Order Pickup (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /orders/:orderId/pickup', async () => {
+  test('[PATCH] /courier/:courierId', async () => {
     const courier = await prisma.courier.create({
       data: {
         name: 'Daniel Smith',
@@ -33,35 +33,27 @@ describe('Mark Order Pickup (E2E)', () => {
       },
     })
 
+    const admin = await prisma.adm.create({
+      data: {
+        email: 'johndoe@email.com',
+        name: 'John Doe',
+        password: await hash('admin', 8),
+      },
+    })
+
     const accessToken = await jwt.signAsync({
-      sub: courier.id,
-      role: 'courier',
-    })
-
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: faker.person.firstName(),
-        phoneNumber: faker.phone.number(),
-        zipCode: faker.location.zipCode(),
-        street: faker.location.street(),
-        neighborhood: 'Hauer',
-        city: faker.location.city(),
-        number: faker.location.buildingNumber(),
-        state: faker.location.state(),
-      },
-    })
-
-    const order = await prisma.order.create({
-      data: {
-        state: 'PENDING',
-        courierId: courier.id,
-        recipientId: recipient.id,
-      },
+      sub: admin.id,
+      role: 'admin',
     })
 
     const result = await request(app.getHttpServer())
-      .get(`/order/${order.id}/pickup`)
+      .patch(`/courier/${courier.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        name: 'John Doe',
+        cpf: '81818181818',
+        password: 'new-password',
+      })
 
     expect(result.statusCode).toEqual(200)
   })

@@ -1,13 +1,13 @@
+import { AppModule } from '@/infra/app.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { faker } from '@faker-js/faker/locale/pt_BR'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
-import { AppModule } from '@/infra/app.module'
-import { faker } from '@faker-js/faker/locale/pt_BR'
 import { hash } from 'bcrypt'
 import request from 'supertest'
 
-describe('Mark Order Pickup (E2E)', () => {
+describe('Delete Courier (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -24,43 +24,30 @@ describe('Mark Order Pickup (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /orders/:orderId/pickup', async () => {
+  test('[DELETE] /courier/:courierId', async () => {
     const courier = await prisma.courier.create({
       data: {
         name: 'Daniel Smith',
-        cpf: '18181818199',
+        cpf: '81818181999',
         password: await hash('mystrongpassword', 8),
       },
     })
 
+    const admin = await prisma.adm.create({
+      data: {
+        email: 'johndoe@email.com',
+        name: 'John Doe',
+        password: await hash('admin', 8),
+      },
+    })
+
     const accessToken = await jwt.signAsync({
-      sub: courier.id,
-      role: 'courier',
-    })
-
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: faker.person.firstName(),
-        phoneNumber: faker.phone.number(),
-        zipCode: faker.location.zipCode(),
-        street: faker.location.street(),
-        neighborhood: 'Hauer',
-        city: faker.location.city(),
-        number: faker.location.buildingNumber(),
-        state: faker.location.state(),
-      },
-    })
-
-    const order = await prisma.order.create({
-      data: {
-        state: 'PENDING',
-        courierId: courier.id,
-        recipientId: recipient.id,
-      },
+      sub: admin.id,
+      role: 'admin',
     })
 
     const result = await request(app.getHttpServer())
-      .get(`/order/${order.id}/pickup`)
+      .delete(`/courier/${courier.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(result.statusCode).toEqual(200)

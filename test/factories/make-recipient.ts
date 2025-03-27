@@ -2,7 +2,11 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Order, OrderProps } from '@/domain/app/enterprise/entities/order'
 import { Recipient } from '@/domain/app/enterprise/entities/recipient'
 import { Address } from '@/domain/app/enterprise/entities/value-objects/address'
+import { PrismaRecipientMapper } from '@/infra/database/prisma/mappers/prisma-recipient-mapper'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { faker } from '@faker-js/faker'
+import { Injectable } from '@nestjs/common'
+import { Recipient as PrismaRecipient } from '@prisma/client'
 
 export const makeRecipient = (
   props: Partial<OrderProps> = {},
@@ -22,4 +26,33 @@ export const makeRecipient = (
   })
 
   return Order.create({ recipient, ...props }, id)
+}
+
+@Injectable()
+export class RecipientFactory {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async makePrismaRecipient(
+    props: Partial<OrderProps> = {},
+    id?: UniqueEntityId,
+  ): Promise<PrismaRecipient> {
+    const recipient = Recipient.create({
+      name: faker.person.firstName(),
+      phoneNumber: faker.phone.number(),
+      address: new Address({
+        zipCode: faker.location.zipCode(),
+        street: faker.location.street(),
+        neighborhood: faker.location.secondaryAddress(),
+        city: faker.location.city(),
+        number: faker.location.buildingNumber(),
+        state: faker.location.state(),
+      }),
+    })
+
+    const prismaRecipient = await this.prisma.recipient.create({
+      data: PrismaRecipientMapper.toPrisma(recipient),
+    })
+
+    return prismaRecipient
+  }
 }

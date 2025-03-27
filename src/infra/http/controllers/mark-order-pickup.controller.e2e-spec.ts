@@ -4,59 +4,48 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import { AppModule } from '@/infra/app.module'
 import { faker } from '@faker-js/faker/locale/pt_BR'
-import { hash } from 'bcrypt'
 import request from 'supertest'
+import { CourierFactory } from 'test/factories/make-courier'
+import { DatabaseModule } from '@/infra/database/database.module'
+import { RecipientFactory } from 'test/factories/make-recipient'
+import { OrderFactory } from 'test/factories/make-order'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 describe('Mark Order Pickup (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
+  let courierFactory: CourierFactory
+  let recipientFactory: RecipientFactory
+  let orderFactory: OrderFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [CourierFactory, RecipientFactory, OrderFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     prisma = app.get(PrismaService)
     jwt = app.get(JwtService)
+    courierFactory = app.get(CourierFactory)
+    recipientFactory = app.get(RecipientFactory)
+    orderFactory = app.get(OrderFactory)
 
     await app.init()
   })
 
   test('[GET] /orders/:orderId/pickup', async () => {
-    const courier = await prisma.courier.create({
-      data: {
-        name: 'Daniel Smith',
-        cpf: '18181818199',
-        password: await hash('mystrongpassword', 8),
-      },
-    })
+    const courier = await courierFactory.makePrismaCourier()
 
     const accessToken = await jwt.signAsync({
       sub: courier.id,
       role: 'courier',
     })
 
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: faker.person.firstName(),
-        phoneNumber: faker.phone.number(),
-        zipCode: faker.location.zipCode(),
-        street: faker.location.street(),
-        neighborhood: 'Hauer',
-        city: faker.location.city(),
-        number: faker.location.buildingNumber(),
-        state: faker.location.state(),
-      },
-    })
-
-    const order = await prisma.order.create({
-      data: {
-        state: 'PENDING',
-        courierId: courier.id,
-        recipientId: recipient.id,
-      },
+    const order = await orderFactory.makePrismaOrder({
+      state: 'Pending',
+      courierId: new UniqueEntityId(courier.id),
     })
 
     const result = await request(app.getHttpServer())

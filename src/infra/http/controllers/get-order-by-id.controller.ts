@@ -18,7 +18,6 @@ export class GetOrderByIdController {
   constructor(private readonly getOrderById: GetOrderByIdUseCase) {}
 
   @Get()
-  @Roles('courier')
   async handle(@CurrentUser() user: UserPayload, @Param('id') orderId: string) {
     const order = await this.getOrderById.execute({
       orderId,

@@ -6,53 +6,45 @@ import { AppModule } from '@/infra/app.module'
 import { faker } from '@faker-js/faker/locale/pt_BR'
 import { hash } from 'bcrypt'
 import request from 'supertest'
+import { CourierFactory } from 'test/factories/make-courier'
+import { AdminFactory } from 'test/factories/make-admin'
+import { RecipientFactory } from 'test/factories/make-recipient'
+import { OrderFactory } from 'test/factories/make-order'
+import { DatabaseModule } from '@/infra/database/database.module'
 
 describe('Edit Order Recipient (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
+  let courierFactory: CourierFactory
+  let adminFactory: AdminFactory
+  let recipientFactory: RecipientFactory
+  let orderFactory: OrderFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [CourierFactory, AdminFactory, RecipientFactory, OrderFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
+
     prisma = app.get(PrismaService)
     jwt = app.get(JwtService)
+    courierFactory = app.get(CourierFactory)
+    adminFactory = app.get(AdminFactory)
+    recipientFactory = app.get(RecipientFactory)
+    orderFactory = app.get(OrderFactory)
 
     await app.init()
   })
 
   test('[PATCH] /order/:orderId', async () => {
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: faker.person.firstName(),
-        phoneNumber: faker.phone.number(),
-        zipCode: faker.location.zipCode(),
-        street: faker.location.street(),
-        neighborhood: 'Hauer',
-        city: faker.location.city(),
-        number: faker.location.buildingNumber(),
-        state: faker.location.state(),
-      },
+    const order = await orderFactory.makePrismaOrder({
+      state: 'Pending',
     })
 
-    const order = await prisma.order.create({
-      data: {
-        state: 'PENDING',
-        recipientId: recipient.id,
-      },
-    })
-
-    const admin = await prisma.adm.create({
-      data: {
-        name: 'John Doe',
-        email: 'johndoe2@email.com',
-        password: await hash('mystrongpassword', 8),
-      },
-    })
-
+    const admin = await adminFactory.makeAdmin()
     const accessToken = await jwt.signAsync({
       sub: admin.id,
       role: 'admin',

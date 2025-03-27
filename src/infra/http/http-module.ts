@@ -21,6 +21,8 @@ import { EditCourierController } from './controllers/edit-courier.controller'
 import { EditCourierUseCase } from '@/domain/app/application/use-cases/edit-courier'
 import { EditOrderController } from './controllers/edit-order-recipient.controller'
 import { EditOrderUseCase } from '@/domain/app/application/use-cases/edit-order-recipient'
+import { DeleteOrderController } from './controllers/delete-order.controller'
+import { DeleteOrderUseCase } from '@/domain/app/application/use-cases/delete-order'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -35,6 +37,7 @@ import { EditOrderUseCase } from '@/domain/app/application/use-cases/edit-order-
     DeleteCourierController,
     EditCourierController,
     EditOrderController,
+    DeleteOrderController,
   ],
   providers: [
     AuthenticateAdminUseCase,
@@ -47,6 +50,7 @@ import { EditOrderUseCase } from '@/domain/app/application/use-cases/edit-order-
     DeleteCourierUseCase,
     EditCourierUseCase,
     EditOrderUseCase,
+    DeleteOrderUseCase,
   ],
 })
 export class HttpModule {}

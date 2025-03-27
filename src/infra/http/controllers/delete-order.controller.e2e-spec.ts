@@ -3,16 +3,14 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import { AppModule } from '@/infra/app.module'
-import { faker } from '@faker-js/faker/locale/pt_BR'
-import { hash } from 'bcrypt'
 import request from 'supertest'
-import { OrderFactory } from 'test/factories/make-order'
-import { RecipientFactory } from 'test/factories/make-recipient'
-import { AdminFactory } from 'test/factories/make-admin'
 import { CourierFactory } from 'test/factories/make-courier'
+import { AdminFactory } from 'test/factories/make-admin'
 import { DatabaseModule } from '@/infra/database/database.module'
+import { RecipientFactory } from 'test/factories/make-recipient'
+import { OrderFactory } from 'test/factories/make-order'
 
-describe('Edit Courier (E2E)', () => {
+describe('Delete Order (E2E)', async () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -28,7 +26,6 @@ describe('Edit Courier (E2E)', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-
     prisma = app.get(PrismaService)
     jwt = app.get(JwtService)
     courierFactory = app.get(CourierFactory)
@@ -39,23 +36,20 @@ describe('Edit Courier (E2E)', () => {
     await app.init()
   })
 
-  test('[PATCH] /courier/:courierId', async () => {
-    const courier = await courierFactory.makePrismaCourier()
-
+  test('[DELETE] /order/:orderId', async () => {
     const admin = await adminFactory.makeAdmin()
     const accessToken = await jwt.signAsync({
       sub: admin.id,
       role: 'admin',
     })
 
+    const order = await orderFactory.makePrismaOrder({
+      state: 'Available',
+    })
+
     const result = await request(app.getHttpServer())
-      .patch(`/courier/${courier.id}`)
+      .delete(`/order/${order.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        name: 'John Doe',
-        cpf: '81818181818',
-        password: 'new-password',
-      })
 
     expect(result.statusCode).toEqual(200)
   })

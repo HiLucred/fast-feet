@@ -1,6 +1,7 @@
 import { Either, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { Order } from '@/domain/app/enterprise/entities/order'
+import { Injectable } from '@nestjs/common'
 
 interface FetchOrdersByNeighborhoodUseCaseRequest {
   neighborhood: string
@@ -12,6 +13,7 @@ type FetchOrdersByNeighborhoodUseCaseResponse = Either<
   { orders: Order[] }
 >
 
+@Injectable()
 export class FetchOrdersByNeighborhoodUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 
@@ -25,7 +27,7 @@ export class FetchOrdersByNeighborhoodUseCase {
     const orders = ordersByCourier.filter((order) => {
       return (
         order.recipient.address.neighborhood === neighborhood &&
-        order.state !== 'Delivered'
+        order.state === 'Pending'
       )
     })
 

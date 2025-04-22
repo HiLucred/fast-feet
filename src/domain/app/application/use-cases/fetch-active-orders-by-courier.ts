@@ -1,9 +1,11 @@
 import { Either, right } from '@/core/either'
 import { Order } from '@/domain/app/enterprise/entities/order'
 import { OrdersRepository } from '../repositories/orders-repository'
+import { Injectable } from '@nestjs/common'
 
 interface FetchActiveOrdersByCourierUseCaseRequest {
   courierId: string
+  page?: number
 }
 
 type FetchActiveOrdersByCourierUseCaseResponse = Either<
@@ -11,6 +13,7 @@ type FetchActiveOrdersByCourierUseCaseResponse = Either<
   { orders: Order[] }
 >
 
+@Injectable()
 export class FetchActiveOrdersByCourierUseCase {
   constructor(private readonly ordersRepository: OrdersRepository) {}
 

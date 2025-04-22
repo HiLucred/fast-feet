@@ -23,6 +23,10 @@ import { EditOrderController } from './controllers/edit-order-recipient.controll
 import { EditOrderUseCase } from '@/domain/app/application/use-cases/edit-order-recipient'
 import { DeleteOrderController } from './controllers/delete-order.controller'
 import { DeleteOrderUseCase } from '@/domain/app/application/use-cases/delete-order'
+import { FetchActiveOrdersController } from './controllers/fetch-active-orders.controller'
+import { FetchActiveOrdersByCourierUseCase } from '@/domain/app/application/use-cases/fetch-active-orders-by-courier'
+import { FetchOrdersByNeighborhoodController } from './controllers/fetch-orders-by-neighborhood.controller'
+import { FetchOrdersByNeighborhoodUseCase } from '@/domain/app/application/use-cases/fetch-orders-by-neighborhood'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -38,6 +42,8 @@ import { DeleteOrderUseCase } from '@/domain/app/application/use-cases/delete-or
     EditCourierController,
     EditOrderController,
     DeleteOrderController,
+    FetchActiveOrdersController,
+    FetchOrdersByNeighborhoodController,
   ],
   providers: [
     AuthenticateAdminUseCase,
@@ -51,6 +57,8 @@ import { DeleteOrderUseCase } from '@/domain/app/application/use-cases/delete-or
     EditCourierUseCase,
     EditOrderUseCase,
     DeleteOrderUseCase,
+    FetchActiveOrdersByCourierUseCase,
+    FetchOrdersByNeighborhoodUseCase,
   ],
 })
 export class HttpModule {}

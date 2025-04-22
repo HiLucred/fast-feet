@@ -3,6 +3,8 @@ import { FetchOrdersByNeighborhoodUseCase } from './fetch-orders-by-neighborhood
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Recipient } from '../../enterprise/entities/recipient'
+import { Address } from '../../enterprise/entities/value-objects/address'
 
 describe('Fetch Order By Neighborhood Use Case', () => {
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository
@@ -19,27 +21,54 @@ describe('Fetch Order By Neighborhood Use Case', () => {
 
   it('should be able to fetch courier orders by neighborhood', async () => {
     const FAKE_COURIER_ID = new UniqueEntityId('fake-courier-id')
-
-    const order = makeOrder({
-      courierId: FAKE_COURIER_ID,
-    })
-
-    const orderFromAnotherNeighborhood = makeOrder({
-      courierId: FAKE_COURIER_ID,
-    })
+    const NEIGHBORHOOD = 'Bairro Fictício'
 
     // Create 10 orders
     for (let i = 0; i < 10; i++) {
-      inMemoryOrdersRepository.create(order)
+      inMemoryOrdersRepository.create(
+        makeOrder({
+          courierId: FAKE_COURIER_ID,
+          state: 'Pending',
+          recipient: Recipient.create({
+            address: new Address({
+              city: 'Cidade',
+              neighborhood: NEIGHBORHOOD,
+              number: '9832',
+              state: 'fake-state',
+              street: 'fake-street',
+              zipCode: '83928311',
+            }),
+            name: 'fake-name',
+            phoneNumber: '89328932',
+          }),
+        }),
+      )
     }
 
     // Create 10 orders from another neighborhood
     for (let i = 0; i < 10; i++) {
-      inMemoryOrdersRepository.create(orderFromAnotherNeighborhood)
+      inMemoryOrdersRepository.create(
+        makeOrder({
+          courierId: FAKE_COURIER_ID,
+          state: 'Pending',
+          recipient: Recipient.create({
+            address: new Address({
+              city: 'Cidade',
+              neighborhood: 'other-neighborhood',
+              number: '9832',
+              state: 'fake-state',
+              street: 'fake-street',
+              zipCode: '83928311',
+            }),
+            name: 'fake-name',
+            phoneNumber: '89328932',
+          }),
+        }),
+      )
     }
 
     const result = await sut.execute({
-      neighborhood: order.recipient.address.neighborhood,
+      neighborhood: NEIGHBORHOOD,
       courierId: FAKE_COURIER_ID.toString(),
     })
 
@@ -53,13 +82,28 @@ describe('Fetch Order By Neighborhood Use Case', () => {
     const FAKE_COURIER_ID = new UniqueEntityId('fake-courier-id')
     const FAKE_COURIER_ID_2 = new UniqueEntityId('fake-courier-id-2')
 
-    const order = makeOrder({
-      courierId: FAKE_COURIER_ID,
-    })
+    const NEIGHBORHOOD = 'Bairro Fictício'
 
     // Create 10 orders from courier 1
     for (let i = 0; i < 10; i++) {
-      inMemoryOrdersRepository.create(order)
+      inMemoryOrdersRepository.create(
+        makeOrder({
+          courierId: FAKE_COURIER_ID,
+          state: 'Pending',
+          recipient: Recipient.create({
+            address: new Address({
+              city: 'Cidade',
+              neighborhood: NEIGHBORHOOD,
+              number: '9832',
+              state: 'fake-state',
+              street: 'fake-street',
+              zipCode: '83928311',
+            }),
+            name: 'fake-name',
+            phoneNumber: '89328932',
+          }),
+        }),
+      )
     }
 
     // Create 10 orders from courier 2
@@ -67,12 +111,25 @@ describe('Fetch Order By Neighborhood Use Case', () => {
       inMemoryOrdersRepository.create(
         makeOrder({
           courierId: FAKE_COURIER_ID_2,
+          state: 'Pending',
+          recipient: Recipient.create({
+            address: new Address({
+              city: 'Cidade',
+              neighborhood: 'other-neighborhood',
+              number: '9832',
+              state: 'fake-state',
+              street: 'fake-street',
+              zipCode: '83928311',
+            }),
+            name: 'fake-name',
+            phoneNumber: '89328932',
+          }),
         }),
       )
     }
 
     const result = await sut.execute({
-      neighborhood: order.recipient.address.neighborhood,
+      neighborhood: NEIGHBORHOOD,
       courierId: FAKE_COURIER_ID.toString(),
     })
 

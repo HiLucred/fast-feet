@@ -14,7 +14,7 @@ interface UploadPhotoDeliveryUseCaseRequest {
 }
 
 type UploadPhotoDeliveryUseCaseResponse = Either<
-  NotAllowedError | ResourceNotFoundError,
+  InvalidDeliveryPhotoTypeError,
   { deliveryPhoto: DeliveryPhoto }
 >
 

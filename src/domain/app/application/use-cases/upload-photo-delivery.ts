@@ -1,10 +1,9 @@
 import { Either, left, right } from '@/core/either'
-import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { DeliveryPhotosRepository } from '../repositories/delivery-photos-repository'
 import { Uploader } from '../storage/uploader'
 import { DeliveryPhoto } from '@/domain/app/enterprise/entities/delivery-photo'
 import { InvalidDeliveryPhotoTypeError } from './errors/invalid-delivery-photo-type'
+import { Injectable } from '@nestjs/common'
 
 interface UploadPhotoDeliveryUseCaseRequest {
   orderId: string
@@ -18,11 +17,12 @@ type UploadPhotoDeliveryUseCaseResponse = Either<
   { deliveryPhoto: DeliveryPhoto }
 >
 
+@Injectable()
 export class UploadPhotoDeliveryUseCase {
   constructor(
     private readonly deliveryPhotosRepository: DeliveryPhotosRepository,
     private readonly uploader: Uploader,
-  ) {}
+  ) { }
 
   async execute({
     orderId,

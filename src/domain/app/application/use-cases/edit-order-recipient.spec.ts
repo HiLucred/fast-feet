@@ -22,7 +22,7 @@ describe('Edit Order Recipient Use Case', () => {
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      recipient: { name: 'John Doe', city: 'Rio Branco' },
+      recipient: { name: 'John Doe' },
     })
 
     expect(result.isRight()).toBeTruthy()

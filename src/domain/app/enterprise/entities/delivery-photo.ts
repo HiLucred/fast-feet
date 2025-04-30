@@ -1,9 +1,13 @@
 import { Entity } from '@/core/entities/entity'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Optional } from '@/core/types/optional'
 
-interface DeliveryPhotoProps {
+export interface DeliveryPhotoProps {
   orderId: string
   title: string
   url: string
+  createdAt: Date
+  updatedAt?: Date | null
 }
 
 export class DeliveryPhoto extends Entity<DeliveryPhotoProps> {
@@ -19,8 +23,24 @@ export class DeliveryPhoto extends Entity<DeliveryPhotoProps> {
     return this.props.url
   }
 
-  static create(props: DeliveryPhotoProps) {
-    const deliveryPhoto = new DeliveryPhoto(props)
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  static create(props: Optional<DeliveryPhotoProps, 'createdAt'>, id?: UniqueEntityId) {
+    const deliveryPhoto = new DeliveryPhoto({
+      createdAt: props.createdAt ?? new Date(),
+      ...props,
+    }, id)
+
     return deliveryPhoto
   }
 }

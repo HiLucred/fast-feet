@@ -4,42 +4,40 @@ import {
   BadRequestException,
   Controller,
   FileTypeValidator,
-  Get,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
-const parseFilePipe = new ParseFilePipe({
-  validators: [
-    new MaxFileSizeValidator({
-      maxSize: 1024 * 1024 * 2,
-    }), // 2mb
-    new FileTypeValidator({
-      fileType: '(.png|.jpg|.jpeg|.pdf)',
-    }),
-  ],
-})
-
 @Controller('/order/delivery-photo/:orderId')
 export class UploadPhotoDeliveryController {
   constructor(
     private readonly uploadPhotoDelivery: UploadPhotoDeliveryUseCase,
-  ) {}
+  ) { }
 
-  @Get()
+  @Post()
   @UseInterceptors(FileInterceptor('file'))
   async handle(
     @Param('orderId') orderId: string,
-    @UploadedFile(parseFilePipe) file: Express.Multer.File,
+    @UploadedFile(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({
+          maxSize: 1024 * 1024 * 2,
+        }), // 2mb
+        new FileTypeValidator({
+          fileType: '(.png|.jpg|.jpeg|.pdf)',
+        }),
+      ],
+    })) file: Express.Multer.File,
   ) {
     const response = await this.uploadPhotoDelivery.execute({
       orderId,
       fileType: file.mimetype,
-      fileName: file.filename,
+      fileName: file.originalname,
       body: file.buffer,
     })
 
@@ -57,10 +55,7 @@ export class UploadPhotoDeliveryController {
     const { deliveryPhoto } = response.value
 
     return {
-      deliveryPhoto: {
-        id: deliveryPhoto.id.toString(),
-        url: deliveryPhoto.url,
-      },
+      url: deliveryPhoto.url,
     }
   }
 }

@@ -29,8 +29,9 @@ model Order {
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime?  @updatedAt() @map("updated_at")
 
-  recipient Recipient @relation(fields: [recipientId], references: [id])
-  courier   Courier?  @relation(fields: [courierId], references: [id])
+  recipient     Recipient      @relation(fields: [recipientId], references: [id])
+  courier       Courier?       @relation(fields: [courierId], references: [id])
+  deliveryPhoto DeliveryPhoto?
 
   @@map("orders")
 }
@@ -77,4 +78,17 @@ model Adm {
   updatedAt DateTime? @updatedAt() @map("updated_at")
 
   @@map("adms")
+}
+
+model DeliveryPhoto {
+  id        String    @id @default(uuid())
+  title     String
+  url       String
+  orderId   String    @unique @map("order_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt() @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("delivery_photos")
 }

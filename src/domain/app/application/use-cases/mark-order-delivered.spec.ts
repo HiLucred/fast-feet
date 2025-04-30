@@ -7,6 +7,7 @@ import { makeOrder } from 'test/factories/make-order'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { faker } from '@faker-js/faker'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { DeliveryPhotoNotFoundError } from './errors/delivery-photo-not-found-error'
 
 describe('Mark Order Delivered Use Case', () => {
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository
@@ -71,7 +72,7 @@ describe('Mark Order Delivered Use Case', () => {
 
     expect(result.isLeft()).toBeTruthy()
     if (result.isLeft()) {
-      expect(result.value).toBeInstanceOf(NotAllowedError)
+      expect(result.value).toBeInstanceOf(DeliveryPhotoNotFoundError)
     }
   })
 
@@ -84,6 +85,14 @@ describe('Mark Order Delivered Use Case', () => {
       state: 'PickedUp',
     })
     inMemoryOrdersRepository.create(order)
+
+    inMemoryDeliveryPhotosRepository.create(
+      DeliveryPhoto.create({
+        orderId: order.id.toString(),
+        title: faker.string.alpha(),
+        url: faker.internet.url(),
+      }),
+    )
 
     const result = await sut.execute({
       courierId: FAKE_COURIER_ID_2,

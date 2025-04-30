@@ -27,9 +27,14 @@ import { FetchActiveOrdersController } from './controllers/fetch-active-orders.c
 import { FetchActiveOrdersByCourierUseCase } from '@/domain/app/application/use-cases/fetch-active-orders-by-courier'
 import { FetchOrdersByNeighborhoodController } from './controllers/fetch-orders-by-neighborhood.controller'
 import { FetchOrdersByNeighborhoodUseCase } from '@/domain/app/application/use-cases/fetch-orders-by-neighborhood'
+import { UploadPhotoDeliveryController } from './controllers/upload-photo-delivery.controller'
+import { UploadPhotoDeliveryUseCase } from '@/domain/app/application/use-cases/upload-photo-delivery'
+import { StorageModule } from '../storage/storage.module'
+import { MarkOrderDeliveredController } from './controllers/mark-order-delivered.controller'
+import { MarkOrderDeliveredUseCase } from '@/domain/app/application/use-cases/mark-order-delivered'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     AuthenticateAdminController,
     AuthenticateCourierController,
@@ -44,6 +49,8 @@ import { FetchOrdersByNeighborhoodUseCase } from '@/domain/app/application/use-c
     DeleteOrderController,
     FetchActiveOrdersController,
     FetchOrdersByNeighborhoodController,
+    UploadPhotoDeliveryController,
+    MarkOrderDeliveredController
   ],
   providers: [
     AuthenticateAdminUseCase,
@@ -59,6 +66,8 @@ import { FetchOrdersByNeighborhoodUseCase } from '@/domain/app/application/use-c
     DeleteOrderUseCase,
     FetchActiveOrdersByCourierUseCase,
     FetchOrdersByNeighborhoodUseCase,
+    UploadPhotoDeliveryUseCase,
+    MarkOrderDeliveredUseCase
   ],
 })
-export class HttpModule {}
+export class HttpModule { }

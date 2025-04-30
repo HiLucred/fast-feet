@@ -31,7 +31,7 @@ export const makeOrder = (
 
 @Injectable()
 export class OrderFactory {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async makePrismaOrder(
     props: Partial<OrderProps> = {},

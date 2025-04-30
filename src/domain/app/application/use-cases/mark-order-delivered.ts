@@ -4,6 +4,8 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Order } from '@/domain/app/enterprise/entities/order'
 import { DeliveryPhotosRepository } from '../repositories/delivery-photos-repository'
+import { Injectable } from '@nestjs/common'
+import { DeliveryPhotoNotFoundError } from './errors/delivery-photo-not-found-error'
 
 interface MarkOrderDeliveredUseCaseRequest {
   orderId: string
@@ -15,11 +17,12 @@ type MarkOrderDeliveredUseCaseResponse = Either<
   { order: Order }
 >
 
+@Injectable()
 export class MarkOrderDeliveredUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,
     private readonly deliveryPhotosRepository: DeliveryPhotosRepository,
-  ) {}
+  ) { }
 
   async execute({
     orderId,
@@ -29,7 +32,7 @@ export class MarkOrderDeliveredUseCase {
       await this.deliveryPhotosRepository.findByOrderId(orderId)
 
     if (!deliveryPhoto) {
-      return left(new NotAllowedError())
+      return left(new DeliveryPhotoNotFoundError())
     }
 
     const order = await this.ordersRepository.findById(orderId)

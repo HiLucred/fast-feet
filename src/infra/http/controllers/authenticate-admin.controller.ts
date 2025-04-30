@@ -22,7 +22,7 @@ type AuthenticateAdminBodySchema = z.infer<typeof authenticateAdminBodySchema>
 @Controller('/sessions/admin')
 @SkipAuth()
 export class AuthenticateAdminController {
-  constructor(private readonly authenticateAdmin: AuthenticateAdminUseCase) {}
+  constructor(private readonly authenticateAdmin: AuthenticateAdminUseCase) { }
 
   @Post()
   @UsePipes(new ZodValidationPipe(authenticateAdminBodySchema))

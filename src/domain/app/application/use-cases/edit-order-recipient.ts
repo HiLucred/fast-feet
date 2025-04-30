@@ -32,7 +32,7 @@ type EditOrderUseCaseResponse = Either<
 
 @Injectable()
 export class EditOrderUseCase {
-  constructor(private readonly ordersRepository: OrdersRepository) {}
+  constructor(private readonly ordersRepository: OrdersRepository) { }
 
   async execute({
     orderId,
